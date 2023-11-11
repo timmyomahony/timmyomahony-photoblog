@@ -20,21 +20,13 @@
 # Dependencies
 # ============
 #
-# brew install imagemagick awscli
+# brew install imagemagick awscli exiftool
 #
 # Resources
 # =========
 #
 # https://imagemagick.org/script/mogrify.php
 # https://www.noodlesoft.com/manual/hazel/attributes-actions/using-shell-scripts/
-#
-# Todo
-# ===
-#
-# Add option for borders with:
-#
-# mogrify -quality 92 -bordercolor "#ffffff" -border 50 -resize "3072x3072>" $1
-
 
 ALBUM_DIR=$1
 ALBUM_NAME=$(basename "$ALBUM_DIR")
@@ -50,10 +42,25 @@ QUALITY=95
 source ~/.zshrc
 source "$ENV_FILE"
 
-# Process images
-for IMAGE in "$ALBUM_DIR"/*
+# Create thumbnails folder
+THUMBNAIL_DIR="${ALBUM_DIR%/}/Thumbnails/"
+if [ ! -d "$THUMBNAIL_DIR" ]; then
+    mkdir -p "$THUMBNAIL_DIR"
+fi
+
+for IMAGE_PATH in "$ALBUM_DIR"/*.{jpg,jpeg};
 do
-    mogrify -quality "$QUALITY" -resize "$DIMENSIONSx$DIMENSIONS>" "$IMAGE"
+    if [ -f "$IMAGE_PATH" ]; then
+        # Reduce quality of images for web
+        mogrify -quality "$QUALITY" -resize "$DIMENSIONSx$DIMENSIONS>" "$IMAGE_PATH"
+
+        # Create social media thumbnail
+        THUMBNAIL_FILENAME=$(basename "$IMAGE_PATH")
+        THUMBNAIL_PATH="${THUMBNAIL_DIR%/}/$THUMBNAIL_FILENAME"
+        convert "$IMAGE_PATH" -quality 95 -resize "1200x630^" -gravity "center" -extent "1200x630" "$THUMBNAIL_PATH"
+        mogrify -bordercolor white -border "20x20" "$THUMBNAIL_PATH"
+        exiftool -TagsFromFile "$IMAGE_PATH" -all:all -overwrite_original "$THUMBNAIL_PATH"
+    fi
 done
 
 # Upload to Digital Ocean

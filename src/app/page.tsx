@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ListObjectsCommand } from "@aws-sdk/client-s3";
 import slugify from "slugify";
+import ExifReader from "exifreader";
 
 import { s3Client } from "@/utils/do";
 
@@ -8,7 +9,9 @@ type Image = {
   name: string;
   ordering: number;
   url: string;
-}
+  thumbnailUrl: string;
+  exif: any;
+};
 
 type Album = {
   name: string;
@@ -17,9 +20,9 @@ type Album = {
   images: Image[];
 };
 
-type Albums = { [key: string]: Album; }
+type Albums = { [key: string]: Album };
 
-const getData = async () => {
+const getAlbums = async (): Promise<Album[] | []> => {
   try {
     // A regex for separating the date from the album name and file name in a
     // key that looks like:
@@ -34,8 +37,16 @@ const getData = async () => {
     const data: Albums = {};
 
     if (s3Data.Contents) {
-      s3Data.Contents.forEach((obj) => {
+      for (const obj of s3Data.Contents) {
         if (obj.Key) {
+          // We ignore the thumbnails as we're going to grab them manually
+          if (obj.Key.includes("/Thumbnails")) {
+            console.info(`Skipping key ${obj.Key}`);
+            continue;
+          }
+
+          console.log(`Processing key ${obj.Key}`);
+
           const albumMatch = obj.Key.match(pathRegex);
           if (albumMatch) {
             const dateStr = albumMatch[1];
@@ -52,8 +63,6 @@ const getData = async () => {
               throw new Error("Error parsing image name from S3 key via regex");
             }
 
-            const imageUrl = `${process.env.DO_SPACES_PUBLIC_URL}${albumKey}`;
-
             if (typeof data[albumKey] === "undefined") {
               data[albumKey] = {
                 date: dateStr,
@@ -63,10 +72,26 @@ const getData = async () => {
               };
             }
 
-            data[albumKey]['images'].push({
+            const thumbnailUrl = encodeURI(
+              `${process.env.DO_SPACES_PUBLIC_URL}${dateStr}/${albumName}/Thumbnails/${imageName}`
+            );
+            const imageUrl = encodeURI(
+              `${process.env.DO_SPACES_PUBLIC_URL}${obj.Key}`
+            );
+            let thumbnailFile = await fetch(thumbnailUrl);
+            let thumbnailFileBuffer = Buffer.from(
+              await thumbnailFile.arrayBuffer()
+            );
+            let thumbnailExif = ExifReader.load(thumbnailFileBuffer, {
+              expanded: true,
+            });
+
+            data[albumKey]["images"].push({
               name: imageName,
               ordering: imageOrdering,
               url: imageUrl,
+              thumbnailUrl: thumbnailUrl,
+              exif: thumbnailExif,
             });
           } else {
             throw new Error(
@@ -76,21 +101,29 @@ const getData = async () => {
         } else {
           throw new Error("Error parsing key from S3 data");
         }
-      });
+      }
     } else {
       throw new Error("Error getting contents from S3 ListObjectsCommand");
     }
-
     return Object.values(data);
   } catch (err) {
     console.log("Error", err);
   }
+  return [];
 };
 
 const Home = async () => {
-  const data = await getData();
-  console.log(data);
-  return <main className=""></main>;
+  const albums = await getAlbums();
+  console.log(albums);
+  return (
+    <main className="">
+      <ul>
+        {albums.map((album) => {
+          return <li>{album.name}</li>;
+        })}
+      </ul>
+    </main>
+  );
 };
 
 export default Home;
