@@ -2,25 +2,36 @@ import Image from "next/image";
 import { ListObjectsCommand } from "@aws-sdk/client-s3";
 import slugify from "slugify";
 import ExifReader from "exifreader";
-
 import { s3Client } from "@/utils/do";
+import { getPlaiceholder } from "plaiceholder";
 
-type Image = {
+type Photo = {
   name: string;
   ordering: number;
   url: string;
-  thumbnailUrl: string;
   exif: any;
+  placeholder: string;
 };
 
 type Album = {
   name: string;
   slug: string;
   date: string;
-  images: Image[];
+  photos: Photo[];
 };
 
 type Albums = { [key: string]: Album };
+
+const getSimplifiedExif = (exif) => {
+  return {
+    cameraMake: exif["Make"]["description"],
+    cameraModel: exif["Model"]["description"],
+    lens: exif["Lens"]["value"],
+    aperture: exif["FNumber"]["description"],
+    focalLength: exif["FocalLength"]["description"],
+    shutterSpeed: exif["ShutterSpeedValue"]["description"],
+  };
+};
 
 const getAlbums = async (): Promise<Album[] | []> => {
   try {
@@ -51,16 +62,16 @@ const getAlbums = async (): Promise<Album[] | []> => {
           if (albumMatch) {
             const dateStr = albumMatch[1];
             const albumName = albumMatch[2];
-            const imageName = albumMatch[3];
+            const photoName = albumMatch[3];
             const albumSlug = slugify(albumName, { lower: true });
             const albumKey = `${dateStr}-${albumSlug}`;
 
-            const imageMatch = imageName.match(/(\d+)/);
-            let imageOrdering;
-            if (imageMatch) {
-              imageOrdering = parseInt(imageMatch[1], 10);
+            const photoMatch = photoName.match(/(\d+)/);
+            let photoOrdering;
+            if (photoMatch) {
+              photoOrdering = parseInt(photoMatch[1], 10);
             } else {
-              throw new Error("Error parsing image name from S3 key via regex");
+              throw new Error("Error parsing photo name from S3 key via regex");
             }
 
             if (typeof data[albumKey] === "undefined") {
@@ -68,30 +79,29 @@ const getAlbums = async (): Promise<Album[] | []> => {
                 date: dateStr,
                 name: albumName,
                 slug: albumSlug,
-                images: [],
+                photos: [],
               };
             }
 
-            const thumbnailUrl = encodeURI(
-              `${process.env.DO_SPACES_PUBLIC_URL}${dateStr}/${albumName}/Thumbnails/${imageName}`
-            );
-            const imageUrl = encodeURI(
+            const photoUrl = encodeURI(
               `${process.env.DO_SPACES_PUBLIC_URL}${obj.Key}`
             );
-            let thumbnailFile = await fetch(thumbnailUrl);
-            let thumbnailFileBuffer = Buffer.from(
-              await thumbnailFile.arrayBuffer()
+            let photoFile = await fetch(photoUrl);
+            let photoFileBuffer = Buffer.from(await photoFile.arrayBuffer());
+            let { base64: photoPlaceholder } = await getPlaiceholder(
+              photoFileBuffer
             );
-            let thumbnailExif = ExifReader.load(thumbnailFileBuffer, {
-              expanded: true,
-            });
+            let photoExif = ExifReader.load(photoFileBuffer);
+            let simplifiedImageExif = getSimplifiedExif(photoExif);
 
-            data[albumKey]["images"].push({
-              name: imageName,
-              ordering: imageOrdering,
-              url: imageUrl,
-              thumbnailUrl: thumbnailUrl,
-              exif: thumbnailExif,
+            // Generate placeholders
+
+            data[albumKey]["photos"].push({
+              name: photoName,
+              ordering: photoOrdering,
+              url: photoUrl,
+              placeholder: photoPlaceholder,
+              exif: simplifiedImageExif,
             });
           } else {
             throw new Error(
@@ -112,14 +122,41 @@ const getAlbums = async (): Promise<Album[] | []> => {
   return [];
 };
 
+const Photo = ({ album }: { album: Album }) => {
+  const photo = album.photos[0];
+  return (
+    <div className="h-screen w-full flex justify-center items-center">
+      <div className="h-[96%] w-full flex flex-col justify-center items-center">
+        <figure className="max-h-full max-w-full">
+          <Image
+            src={photo.url}
+            width={0}
+            height={0}
+            sizes="100vw"
+            placeholder="blur"
+            blurDataURL={photo.placeholder}
+            className="w-auto h-auto max-h-full max-w-full"
+            alt="Picture of the author"
+            quality={100}
+          />
+          <figcaption>An elephant at sunset</figcaption>
+        </figure>
+      </div>
+    </div>
+  );
+};
+
 const Home = async () => {
   const albums = await getAlbums();
-  console.log(albums);
   return (
-    <main className="">
+    <main className="container mx-auto">
       <ul>
-        {albums.map((album) => {
-          return <li>{album.name}</li>;
+        {albums.map((album, i) => {
+          return (
+            <li key={i}>
+              <Photo album={album} />
+            </li>
+          );
         })}
       </ul>
     </main>
