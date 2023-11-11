@@ -59,4 +59,6 @@ done
 # Upload to Digital Ocean
 export AWS_ACCESS_KEY_ID="$DO_SPACES_ACCESS"
 export AWS_SECRET_ACCESS_KEY="$DO_SPACES_SECRET"
-aws s3 sync "$ALBUM_DIR" "s3://$DO_SPACES_BUCKET/$TODAY $ALBUM_NAME" --endpoint-url "$DO_SPACES_ENDPOINT"
+aws s3 sync "$ALBUM_DIR" "s3://$DO_SPACES_BUCKET/$TODAY/$ALBUM_NAME" --endpoint-url "$DO_SPACES_ENDPOINT" --acl public-read
+
+# Run Vercel webhook
