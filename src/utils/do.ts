@@ -46,11 +46,11 @@ const getAlbums = async (): Promise<Album[] | []> => {
         if (obj.Key) {
           // We ignore the thumbnails as we're going to grab them manually
           if (obj.Key.includes("/Thumbnails")) {
-            console.info(`Skipping key ${obj.Key}`);
+            // console.info(`Skipping key ${obj.Key}`);
             continue;
           }
 
-          console.log(`Processing key ${obj.Key}`);
+          // console.log(`Processing key ${obj.Key}`);
 
           const albumMatch = obj.Key.match(pathRegex);
           if (albumMatch) {
