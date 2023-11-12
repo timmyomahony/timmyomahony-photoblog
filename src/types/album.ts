@@ -7,12 +7,18 @@ type Photo = {
   type?: string;
   url: string;
   exif: {
-    cameraMake: string,
-    cameraModel: string,
-    lens: string,
-    aperture: string,
-    focalLength: string,
-    shutterSpeed: string,
+    title?: string,
+    description?: string,
+    date?: string,
+    time?: string,
+    fileName?: string,
+    cameraMake?: string,
+    cameraModel?: string,
+    lens?: string,
+    iso?: number,
+    aperture?: string,
+    focalLength?: string,
+    shutterSpeed?: string,
   };
   placeholder: string;
 };

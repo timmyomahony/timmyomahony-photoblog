@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { motion, Variants } from "framer-motion";
 
-import useBreakpoints from "@/app/hooks/breakpoints";
+import useBreakpoints from "@/hooks/breakpoints";
 import type { Photo } from "@/types/album";
 
 const photoVariants: Variants = {

@@ -19,12 +19,18 @@ const s3Client = new S3({
 
 const getSimplifiedExif = (exif: any) => {
   return {
-    cameraMake: exif["Make"]["description"],
-    cameraModel: exif["Model"]["description"],
-    lens: exif["Lens"]["value"],
-    aperture: exif["FNumber"]["description"],
-    focalLength: exif["FocalLength"]["description"],
-    shutterSpeed: exif["ShutterSpeedValue"]["description"],
+    date: (exif["Digital Creation Date"] || {})["description"],
+    time: (exif["Digital Creation Time"] || {})["description"],
+    title: (exif["title"] || {})["description"],
+    description: (exif["description"] || {})["description"],
+    fileName: (exif["RawFileName"] || {})["description"],
+    cameraMake: (exif["Make"] || {})["description"],
+    cameraModel: (exif["Model"] || {})["description"],
+    lens: (exif["LensModel"] || {})["value"],
+    iso: (exif["ISOSpeedRatings"] || {})["description"],
+    aperture: (exif["FNumber"] || {})["description"],
+    focalLength: (exif["FocalLength"] || {})["description"],
+    shutterSpeed: (exif["ShutterSpeedValue"] || {})["description"],
   };
 };
 
@@ -54,6 +60,10 @@ const getPhotos = async (): Promise<Photo[] | []> => {
     let { base64: placeholder } = await getPlaiceholder(buffer);
     let { height, width, type } = await sizeOf(buffer);
     let exif = ExifReader.load(buffer);
+    console.log(path);
+    if (path.includes("Image-09.jpg")) {
+      console.log(exif);
+    }
     let simplifiedExif = getSimplifiedExif(exif);
 
     photos.push({
@@ -78,7 +88,9 @@ const getAlbums = async (): Promise<Album[] | []> => {
 
   for (let i = 0; i < photos.length; i++) {
     const photo = photos[i];
-    const albumMatch = photo.path.match(/^(\d{4}-\d{2}-\d{2})\/([^\/]+)\/([^\/]+)$/);
+    const albumMatch = photo.path.match(
+      /^(\d{4}-\d{2}-\d{2})\/([^\/]+)\/([^\/]+)$/
+    );
     if (albumMatch) {
       const date = albumMatch[1];
       const name = albumMatch[2];

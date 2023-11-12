@@ -31,17 +31,15 @@ const Photo = ({ album }: { album: Album }) => {
 const Home = async () => {
   const albums = await getAlbums();
   return (
-    <main className="container mx-auto">
-      <ul>
-        {albums.map((album, i) => {
-          return (
-            <li key={i}>
-              <Photo album={album} />
-            </li>
-          );
-        })}
-      </ul>
-    </main>
+    <ul>
+      {albums.map((album, i) => {
+        return (
+          <li key={i}>
+            <Photo album={album} />
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 
