@@ -27,13 +27,13 @@ const Photo = ({ photo }: { photo: Photo }) => {
     <figure>
       <Image
         src={photo.url}
-        width={0}
-        height={0}
-        sizes="100vw"
+        width={photo.width}
+        height={photo.height}
         placeholder="blur"
         blurDataURL={photo.placeholder}
         className="max-w-full w-full"
-        alt=""
+        title={photo.exif.title}
+        alt={photo.exif.description || ""}
         quality={100}
       />
     </figure>
@@ -120,10 +120,7 @@ const MasonryGrid = ({
               viewport={{ once: true }}
               onClick={() => onClick(photo)}
             >
-              <motion.div
-                variants={photoVariants}
-                className="cursor-zoom-in"
-              >
+              <motion.div variants={photoVariants} className="cursor-zoom-in">
                 <Photo photo={photo} />
               </motion.div>
             </motion.li>

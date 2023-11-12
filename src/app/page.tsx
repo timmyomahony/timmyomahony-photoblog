@@ -18,7 +18,7 @@ const Photo = ({ album }: { album: Album }) => {
           placeholder="blur"
           blurDataURL={photo.placeholder}
           className="aspect-square object-cover w-full h-full"
-          alt="Picture of the author"
+          alt=""
           quality={100}
         />
         <div className="absolute p-8 left-0 top-0 w-full h-full bg-white bg-opacity-80 flex justify-center items-center transition-opacity duration-50 ease-in-out opacity-0 group-hover:opacity-100">
