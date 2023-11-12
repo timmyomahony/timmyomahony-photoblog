@@ -2,13 +2,29 @@
 
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
+import { motion, Variants } from "framer-motion";
 
 import useBreakpoints from "@/app/hooks/breakpoints";
 import type { Photo } from "@/types/album";
 
+const photoVariants: Variants = {
+  offscreen: {
+    opacity: 0,
+    y: 100,
+  },
+  onscreen: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.75,
+      duration: 0.35,
+    },
+  },
+};
+
 const Photo = ({ photo }: { photo: Photo }) => {
   return (
-    <figure className="">
+    <figure className="cursor-pointer">
       <Image
         src={photo.url}
         width={0}
@@ -24,7 +40,7 @@ const Photo = ({ photo }: { photo: Photo }) => {
   );
 };
 
-const MasonryGrid = ({ photos }: { photos: Photo[] }) => {
+const MasonryGrid = ({ photos, onClick }: { photos: Photo[] }) => {
   const breakpoint = useBreakpoints();
 
   const containerRef = useRef(null);
@@ -85,11 +101,21 @@ const MasonryGrid = ({ photos }: { photos: Photo[] }) => {
   return (
     <section ref={containerRef} className="w-full flex gap-8">
       {columns.map((column, i) => (
-        <div className="flex flex-col gap-8 flex-1" key={i}>
-          {column.photos.map((photo) => (
-            <Photo photo={photo} />
+        <ul className="flex flex-col gap-8 flex-1" key={i}>
+          {column.photos.map((photo, i) => (
+            <motion.li
+              className="w-full"
+              key={i}
+              initial="offscreen"
+              whileInView="onscreen"
+              viewport={{ once: true }}
+            >
+              <motion.div variants={photoVariants}>
+                <Photo photo={photo} />
+              </motion.div>
+            </motion.li>
           ))}
-        </div>
+        </ul>
       ))}
     </section>
   );
