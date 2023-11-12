@@ -9,12 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        "suisse-intl": ["Suisse Intl", "Helvetica", "Arial", "sans-serif"],
-      },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "pp-mori": ["PP Mori", "Helvetica", "Arial", "sans-serif"],
       },
     },
   },
