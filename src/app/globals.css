@@ -58,6 +58,10 @@
   @apply bg-white bg-opacity-90;
 }
 
+.yarl__button {
+  filter: none;
+}
+
 .yarl__slide_title {
   @apply font-suisse-intl font-normal text-base text-black;
 }
