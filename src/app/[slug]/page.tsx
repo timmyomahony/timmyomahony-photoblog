@@ -5,7 +5,7 @@ import type { Photo } from "@/types/album";
 
 const Photo = ({ photo }: { photo: Photo }) => {
   return (
-    <figure className="flex flex-col justify-center gap-2 max-h-full max-w-full overflow-hidden">
+    <figure className="bg-slate-900 max-w-full max-h-[400px] overflow-hidden flex justify-center items-center">
       <Image
         src={photo.url}
         width={0}
@@ -13,7 +13,7 @@ const Photo = ({ photo }: { photo: Photo }) => {
         sizes="100vw"
         placeholder="blur"
         blurDataURL={photo.placeholder}
-        className="max-h-[90vh] max-w-full object-contain w-auto h-auto"
+        className="h-full w-full max-h-full max-w-full"
         alt="Picture of the author"
         quality={100}
       />
@@ -29,9 +29,9 @@ const AlbumPage = async ({ params }: { params: { slug: string } }) => {
   }
 
   return (
-    <main className="container mx-auto">
+    <main className="max-w-[800px] mx-auto">
       <h1 className="text-3xl font-bold">{album.name}</h1>
-      <ul>
+      <ul className="flex flex-col gap-8">
         {album.photos.map((photo, i) => {
           return (
             <li key={i}>

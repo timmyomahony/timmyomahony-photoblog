@@ -3,6 +3,7 @@ import { ListObjectsCommand } from "@aws-sdk/client-s3";
 import slugify from "slugify";
 import ExifReader from "exifreader";
 import { getPlaiceholder } from "plaiceholder";
+import sizeOf from "image-size";
 
 import type { Photo, Album, Albums } from "@/types/album";
 
@@ -16,7 +17,7 @@ const s3Client = new S3({
   },
 });
 
-const getSimplifiedExif = (exif) => {
+const getSimplifiedExif = (exif: any) => {
   return {
     cameraMake: exif["Make"]["description"],
     cameraModel: exif["Model"]["description"],
@@ -85,13 +86,16 @@ const getAlbums = async (): Promise<Album[] | []> => {
             let { base64: photoPlaceholder } = await getPlaiceholder(
               photoFileBuffer
             );
+            let dimensions = await sizeOf(photoFileBuffer);
+            console.log(dimensions);
             let photoExif = ExifReader.load(photoFileBuffer);
             let simplifiedImageExif = getSimplifiedExif(photoExif);
 
-            // Generate placeholders
-
             data[albumKey]["photos"].push({
               name: photoName,
+              height: dimensions.height,
+              width: dimensions.width,
+              type: dimensions.type,
               ordering: photoOrdering,
               url: photoUrl,
               placeholder: photoPlaceholder,

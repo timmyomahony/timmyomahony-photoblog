@@ -1,8 +1,18 @@
 type Photo = {
   name: string;
   ordering: number;
+  height?: number;
+  width?: number;
+  type?: string;
   url: string;
-  exif: any;
+  exif: {
+    cameraMake: string,
+    cameraModel: string,
+    lens: string,
+    aperture: string,
+    focalLength: string,
+    shutterSpeed: string,
+  };
   placeholder: string;
 };
 
