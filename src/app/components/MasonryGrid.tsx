@@ -23,6 +23,7 @@ const photoVariants: Variants = {
 };
 
 const Photo = ({ photo }: { photo: Photo }) => {
+  console.log(photo.uuid);
   return (
     <figure className="cursor-pointer">
       <Image

@@ -4,7 +4,7 @@ import slugify from "slugify";
 import ExifReader from "exifreader";
 import { getPlaiceholder } from "plaiceholder";
 import sizeOf from "image-size";
-
+import getUuid from "uuid-by-string";
 import type { Photo, Album, Albums } from "@/types/album";
 
 const s3Client = new S3({
@@ -28,99 +28,76 @@ const getSimplifiedExif = (exif: any) => {
   };
 };
 
-const getAlbums = async (): Promise<Album[] | []> => {
-  try {
-    // A regex for separating the date from the album name and file name in a
-    // key that looks like:
-    //
-    // "2023-11-11/Testing Album Ferrys/Image-9.jpg"
-    const pathRegex = /^(\d{4}-\d{2}-\d{2})\/([^\/]+)\/([^\/]+)$/;
-    const params = {
+// Get list of all keys
+const getS3Keys = async (): Promise<string[] | []> => {
+  const s3Data = await s3Client.send(
+    new ListObjectsCommand({
       Bucket: process.env.DO_SPACES_BUCKET,
-    };
-    const s3Data = await s3Client.send(new ListObjectsCommand(params));
-
-    const data: Albums = {};
-
-    if (s3Data.Contents) {
-      let albumId = 0,
-        photoId = 0;
-      for (const obj of s3Data.Contents) {
-        if (obj.Key) {
-          // We ignore the thumbnails as we're going to grab them manually
-          if (obj.Key.includes("/Thumbnails")) {
-            // console.info(`Skipping key ${obj.Key}`);
-            continue;
-          }
-
-          // console.log(`Processing key ${obj.Key}`);
-
-          const albumMatch = obj.Key.match(pathRegex);
-          if (albumMatch) {
-            const dateStr = albumMatch[1];
-            const albumName = albumMatch[2];
-            const photoName = albumMatch[3];
-            const albumSlug = slugify(albumName, { lower: true });
-            const albumKey = `${dateStr}-${albumSlug}`;
-
-            const photoMatch = photoName.match(/(\d+)/);
-            let photoOrdering;
-            if (photoMatch) {
-              photoOrdering = parseInt(photoMatch[1], 10);
-            } else {
-              throw new Error("Error parsing photo name from S3 key via regex");
-            }
-
-            if (typeof data[albumKey] === "undefined") {
-              data[albumKey] = {
-                id: albumId++,
-                date: dateStr,
-                name: albumName,
-                slug: albumSlug,
-                photos: [],
-              };
-            }
-
-            const photoUrl = encodeURI(
-              `${process.env.DO_SPACES_PUBLIC_URL}${obj.Key}`
-            );
-            let photoFile = await fetch(photoUrl);
-            let photoFileBuffer = Buffer.from(await photoFile.arrayBuffer());
-            let { base64: photoPlaceholder } = await getPlaiceholder(
-              photoFileBuffer
-            );
-            let dimensions = await sizeOf(photoFileBuffer);
-            let photoExif = ExifReader.load(photoFileBuffer);
-            let simplifiedImageExif = getSimplifiedExif(photoExif);
-
-            data[albumKey]["photos"].push({
-              id: photoId++,
-              name: photoName,
-              height: dimensions.height,
-              width: dimensions.width,
-              type: dimensions.type,
-              ordering: photoOrdering,
-              url: photoUrl,
-              placeholder: photoPlaceholder,
-              exif: simplifiedImageExif,
-            });
-          } else {
-            throw new Error(
-              "Error parsing date/album name/path from S3 key via regex"
-            );
-          }
-        } else {
-          throw new Error("Error parsing key from S3 data");
-        }
-      }
-    } else {
-      throw new Error("Error getting contents from S3 ListObjectsCommand");
-    }
-    return Object.values(data);
-  } catch (err) {
-    console.log("Error", err);
+    })
+  );
+  if (s3Data.Contents) {
+    return Object.values(s3Data.Contents).map((obj) => obj.Key);
   }
   return [];
 };
 
-export { getAlbums };
+const getPhotos = async (): Promise<Photo[] | []> => {
+  const s3Keys = await getS3Keys();
+  const photos: Photo[] = [];
+
+  for (let i = 0; i < s3Keys.length; i++) {
+    const path = s3Keys[i];
+    const uuid = getUuid(path);
+    const url = encodeURI(`${process.env.DO_SPACES_PUBLIC_URL}${path}`);
+    let photoFile = await fetch(url);
+    let buffer = Buffer.from(await photoFile.arrayBuffer());
+    let { base64: placeholder } = await getPlaiceholder(buffer);
+    let { height, width, type } = await sizeOf(buffer);
+    let exif = ExifReader.load(buffer);
+    let simplifiedExif = getSimplifiedExif(exif);
+
+    photos.push({
+      id: i,
+      uuid,
+      path,
+      height,
+      width,
+      type,
+      url,
+      placeholder,
+      exif: simplifiedExif,
+    });
+  }
+
+  return photos;
+};
+
+const getAlbums = async (): Promise<Album[] | []> => {
+  const photos = await getPhotos();
+  const albums: Albums = {};
+
+  for (let i = 0; i < photos.length; i++) {
+    const photo = photos[i];
+    const albumMatch = photo.path.match(/^(\d{4}-\d{2}-\d{2})\/([^\/]+)\/([^\/]+)$/);
+    if (albumMatch) {
+      const date = albumMatch[1];
+      const name = albumMatch[2];
+      const slug = slugify(name, { lower: true });
+      const key = `${date}-${slug}`;
+      if (typeof albums[key] === "undefined") {
+        albums[key] = {
+          id: i,
+          date,
+          name,
+          slug,
+          photos: [],
+        };
+      }
+      albums[key]["photos"].push(photo);
+    }
+  }
+
+  return Object.values(albums);
+};
+
+export { getPhotos, getAlbums };

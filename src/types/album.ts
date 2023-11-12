@@ -1,7 +1,7 @@
 type Photo = {
   id: number;
-  name: string;
-  ordering: number;
+  uuid: string;
+  path: string;
   height?: number;
   width?: number;
   type?: string;
