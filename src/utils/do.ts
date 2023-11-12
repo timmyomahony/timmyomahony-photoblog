@@ -60,10 +60,6 @@ const getPhotos = async (): Promise<Photo[] | []> => {
     let { base64: placeholder } = await getPlaiceholder(buffer);
     let { height, width, type } = await sizeOf(buffer);
     let exif = ExifReader.load(buffer);
-    console.log(path);
-    if (path.includes("Image-09.jpg")) {
-      console.log(exif);
-    }
     let simplifiedExif = getSimplifiedExif(exif);
 
     photos.push({

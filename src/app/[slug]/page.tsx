@@ -1,5 +1,5 @@
 import { getAlbums } from "@/utils/do";
-import MasonryGrid from "@/components/MasonryGrid";
+import Gallery from "@/components/Gallery";
 
 const AlbumPage = async ({ params }: { params: { slug: string } }) => {
   const album = (await getAlbums()).find((album) => album.slug === params.slug);
@@ -8,7 +8,7 @@ const AlbumPage = async ({ params }: { params: { slug: string } }) => {
     return <></>;
   }
 
-  return <MasonryGrid photos={album.photos} />;
+  return <Gallery photos={album.photos} />;
 };
 
 const generateStaticParams = async () => {

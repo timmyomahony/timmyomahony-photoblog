@@ -6,6 +6,7 @@ type Photo = {
   width?: number;
   type?: string;
   url: string;
+  ordering?:number;
   exif: {
     title?: string,
     description?: string,

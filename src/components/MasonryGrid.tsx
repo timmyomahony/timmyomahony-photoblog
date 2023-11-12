@@ -23,9 +23,8 @@ const photoVariants: Variants = {
 };
 
 const Photo = ({ photo }: { photo: Photo }) => {
-  console.log(photo.uuid);
   return (
-    <figure className="cursor-pointer">
+    <figure>
       <Image
         src={photo.url}
         width={0}
@@ -41,14 +40,23 @@ const Photo = ({ photo }: { photo: Photo }) => {
   );
 };
 
-const MasonryGrid = ({ photos, onClick }: { photos: Photo[] }) => {
+type Columns = Array<{
+  height: number;
+  photos: Array<Photo>;
+}>;
+
+const MasonryGrid = ({
+  photos,
+  onClick,
+}: {
+  photos: Photo[];
+  onClick: (photo: Photo) => void;
+}) => {
   const breakpoint = useBreakpoints();
 
   const containerRef = useRef(null);
   const [numColumns, setNumColumns] = useState<number | undefined>();
-  const [columns, setColumns] = useState([]);
-
-  useEffect(() => {}, []);
+  const [columns, setColumns] = useState<Columns>([]);
 
   useEffect(() => {
     console.log(`Breakpoint changed to ${breakpoint}`);
@@ -69,7 +77,7 @@ const MasonryGrid = ({ photos, onClick }: { photos: Photo[] }) => {
     if (numColumns) {
       console.log(`Columns changed to ${numColumns}`);
 
-      const columns: any = Array.from({ length: numColumns }, () => ({
+      const columns: Columns = Array.from({ length: numColumns }, () => ({
         height: 0,
         photos: [],
       }));
@@ -83,7 +91,7 @@ const MasonryGrid = ({ photos, onClick }: { photos: Photo[] }) => {
         }
 
         columns[shortestColumnIndex].photos.push({
-          i,
+          ordering: i,
           ...photo,
         });
 
@@ -100,25 +108,29 @@ const MasonryGrid = ({ photos, onClick }: { photos: Photo[] }) => {
   }, [numColumns]);
 
   return (
-    <section ref={containerRef} className="w-full flex gap-8">
+    <div ref={containerRef} className="w-full flex gap-8">
       {columns.map((column, i) => (
         <ul className="flex flex-col gap-8 flex-1" key={i}>
-          {column.photos.map((photo, i) => (
+          {column.photos.map((photo) => (
             <motion.li
               className="w-full"
-              key={i}
+              key={photo.ordering}
               initial="offscreen"
               whileInView="onscreen"
               viewport={{ once: true }}
+              onClick={() => onClick(photo)}
             >
-              <motion.div variants={photoVariants}>
+              <motion.div
+                variants={photoVariants}
+                className="cursor-zoom-in"
+              >
                 <Photo photo={photo} />
               </motion.div>
             </motion.li>
           ))}
         </ul>
       ))}
-    </section>
+    </div>
   );
 };
 
