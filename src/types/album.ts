@@ -1,4 +1,5 @@
 type Photo = {
+  id: number;
   name: string;
   ordering: number;
   height?: number;
@@ -17,6 +18,7 @@ type Photo = {
 };
 
 type Album = {
+  id: number;
   name: string;
   slug: string;
   date: string;

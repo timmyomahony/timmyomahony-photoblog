@@ -43,6 +43,8 @@ const getAlbums = async (): Promise<Album[] | []> => {
     const data: Albums = {};
 
     if (s3Data.Contents) {
+      let albumId = 0,
+        photoId = 0;
       for (const obj of s3Data.Contents) {
         if (obj.Key) {
           // We ignore the thumbnails as we're going to grab them manually
@@ -71,6 +73,7 @@ const getAlbums = async (): Promise<Album[] | []> => {
 
             if (typeof data[albumKey] === "undefined") {
               data[albumKey] = {
+                id: albumId++,
                 date: dateStr,
                 name: albumName,
                 slug: albumSlug,
@@ -87,11 +90,11 @@ const getAlbums = async (): Promise<Album[] | []> => {
               photoFileBuffer
             );
             let dimensions = await sizeOf(photoFileBuffer);
-            console.log(dimensions);
             let photoExif = ExifReader.load(photoFileBuffer);
             let simplifiedImageExif = getSimplifiedExif(photoExif);
 
             data[albumKey]["photos"].push({
+              id: photoId++,
               name: photoName,
               height: dimensions.height,
               width: dimensions.width,
