@@ -23,7 +23,7 @@ const Photo = ({ album }: { album: Album }) => {
         />
         <div className="absolute p-8 left-0 top-0 w-full h-full bg-white bg-opacity-80 flex justify-center items-center transition-opacity duration-50 ease-in-out opacity-0 group-hover:opacity-100">
           <div className="text-slate-900 text-center">
-            <figcaption className="text-4xl">{album.name}</figcaption>
+            <figcaption className="text-4xl underline">{album.name}</figcaption>
           </div>
         </div>
       </Link>
