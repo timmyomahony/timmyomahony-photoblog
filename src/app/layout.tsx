@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/captions.css";
 import "./globals.css";
 
 import Header from "@/components/Header";

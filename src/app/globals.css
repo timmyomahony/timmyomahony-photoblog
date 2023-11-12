@@ -52,5 +52,20 @@
   }
 }
 
-body {
+/* Slider */
+.yarl__container {
+  background: none;
+  @apply bg-white bg-opacity-90;
+}
+
+.yarl__slide_title {
+  @apply font-suisse-intl font-normal text-base text-black;
+}
+
+.yarl__slide_description {
+  @apply font-suisse-intl font-normal text-xs text-black;
+}
+
+.yarl__slide_captions_container {
+  background: none;
 }

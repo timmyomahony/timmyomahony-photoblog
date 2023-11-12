@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        "pp-mori": ["Suisse Intl", "Helvetica", "Arial", "sans-serif"],
+        "suisse-intl": ["Suisse Intl", "Helvetica", "Arial", "sans-serif"],
       },
     },
   },
