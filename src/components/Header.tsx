@@ -5,15 +5,15 @@ import InstagramIcon from "@/icons/Instagram.svg";
 const Header = () => {
   return (
     <header className="w-full py-8">
-      <section className="container mx-auto flex justify-between items-center">
+      <section className="container flex justify-between items-center">
         <h1 className="text-xl font-medium">
-          <Link href="/">Timmy O&apos;Mahony</Link>
+          <Link href="/" className="hover:underline">Timmy O&apos;Mahony</Link>
         </h1>
         <nav>
           <ul>
             <li>
               <Link href="https://instagram.com/timmy.omahony">
-                <InstagramIcon className="w-6 h-6" />
+                <InstagramIcon className="w-7 h-7" />
               </Link>
             </li>
           </ul>

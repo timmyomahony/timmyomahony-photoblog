@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-suisse-intl">
         <Header />
-        <main className="container mx-auto">{children}</main>
+        <main className="container">{children}</main>
         <Footer />
       </body>
     </html>
