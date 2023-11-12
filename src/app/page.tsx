@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import type { Album } from "@/types/album";
+import type { Album } from "@/types/photos";
 
-import { getAlbums } from "@/utils/do";
+import { getAlbums } from "@/utils/photos";
 import Link from "next/link";
 
 const Photo = ({ album }: { album: Album }) => {

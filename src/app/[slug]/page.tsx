@@ -1,4 +1,4 @@
-import { getAlbums } from "@/utils/do";
+import { getAlbums } from "@/utils/photos";
 import Gallery from "@/components/Gallery";
 
 const AlbumPage = async ({ params }: { params: { slug: string } }) => {

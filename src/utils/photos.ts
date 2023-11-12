@@ -1,21 +1,11 @@
-import { S3 } from "@aws-sdk/client-s3";
-import { ListObjectsCommand } from "@aws-sdk/client-s3";
 import slugify from "slugify";
 import ExifReader from "exifreader";
 import { getPlaiceholder } from "plaiceholder";
 import sizeOf from "image-size";
 import getUuid from "uuid-by-string";
-import type { Photo, Album, Albums } from "@/types/album";
+import type { Photo, Album, Albums } from "@/types/photos";
+import { getS3Keys } from "@/utils/aws";
 
-const s3Client = new S3({
-  forcePathStyle: false, // Configures to use subdomain/virtual calling format.
-  endpoint: process.env.DO_SPACES_ENDPOINT,
-  region: process.env.DO_SPACES_REGION,
-  credentials: {
-    accessKeyId: process.env.DO_SPACES_ACCESS,
-    secretAccessKey: process.env.DO_SPACES_SECRET,
-  },
-});
 
 const getSimplifiedExif = (exif: any) => {
   return {
@@ -34,19 +24,6 @@ const getSimplifiedExif = (exif: any) => {
   };
 };
 
-// Get list of all keys
-const getS3Keys = async (): Promise<string[] | []> => {
-  const s3Data = await s3Client.send(
-    new ListObjectsCommand({
-      Bucket: process.env.DO_SPACES_BUCKET,
-    })
-  );
-  if (s3Data.Contents) {
-    return Object.values(s3Data.Contents).map((obj) => obj.Key);
-  }
-  return [];
-};
-
 const getPhotos = async (): Promise<Photo[] | []> => {
   const s3Keys = await getS3Keys();
   const photos: Photo[] = [];
@@ -54,7 +31,7 @@ const getPhotos = async (): Promise<Photo[] | []> => {
   for (let i = 0; i < s3Keys.length; i++) {
     const path = s3Keys[i];
     const uuid = getUuid(path);
-    const url = encodeURI(`${process.env.DO_SPACES_PUBLIC_URL}${path}`);
+    const url = encodeURI(`${process.env.AWS_PUBLIC_URL}${path}`);
     let photoFile = await fetch(url);
     let buffer = Buffer.from(await photoFile.arrayBuffer());
     let { base64: placeholder } = await getPlaiceholder(buffer);
@@ -109,8 +86,8 @@ const getAlbums = async (): Promise<Album[] | []> => {
     }
   }
 
-  return Object.values(albums).sort(
-    (a, b) => new Date(a.date) >= new Date(b.date)
+  return Object.values(albums).sort((a, b) =>
+    new Date(a.date) < new Date(b.date) ? -1 : 1
   );
 };
 

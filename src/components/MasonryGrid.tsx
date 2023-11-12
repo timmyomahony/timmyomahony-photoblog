@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion, Variants } from "framer-motion";
 
 import useBreakpoints from "@/hooks/breakpoints";
-import type { Photo } from "@/types/album";
+import type { Photo } from "@/types/photos";
 
 const photoVariants: Variants = {
   offscreen: {
