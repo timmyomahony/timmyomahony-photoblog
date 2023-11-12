@@ -59,6 +59,8 @@ const getPhotos = async (): Promise<Photo[] | []> => {
     let buffer = Buffer.from(await photoFile.arrayBuffer());
     let { base64: placeholder } = await getPlaiceholder(buffer);
     let { height, width, type } = await sizeOf(buffer);
+    let ratio = width / height;
+    let isPortrait = ratio < 1;
     let exif = ExifReader.load(buffer);
     let simplifiedExif = getSimplifiedExif(exif);
 
@@ -70,6 +72,8 @@ const getPhotos = async (): Promise<Photo[] | []> => {
       width,
       type,
       url,
+      ratio,
+      isPortrait,
       placeholder,
       exif: simplifiedExif,
     });
@@ -105,7 +109,9 @@ const getAlbums = async (): Promise<Album[] | []> => {
     }
   }
 
-  return Object.values(albums);
+  return Object.values(albums).sort(
+    (a, b) => new Date(a.date) >= new Date(b.date)
+  );
 };
 
 export { getPhotos, getAlbums };

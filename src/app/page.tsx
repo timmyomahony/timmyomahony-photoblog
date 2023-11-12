@@ -8,38 +8,41 @@ import Link from "next/link";
 const Photo = ({ album }: { album: Album }) => {
   const photo = album.photos[0];
   return (
-    <div className="h-screen w-full flex justify-center items-center">
-      <figure className="flex flex-col justify-center gap-2 max-h-full max-w-full overflow-hidden">
-        <Link href={`/${album.slug}`}>
-          <Image
-            src={photo.url}
-            width={0}
-            height={0}
-            sizes="100vw"
-            placeholder="blur"
-            blurDataURL={photo.placeholder}
-            className="max-h-[90vh] max-w-full object-contain w-auto h-auto"
-            alt="Picture of the author"
-            quality={100}
-          />
-        </Link>
-      </figure>
-    </div>
+    <figure className="relative overflow-hidden group">
+      <Link href={`/${album.slug}`} className="block">
+        <Image
+          src={photo.url}
+          width={0}
+          height={0}
+          sizes="100vw"
+          placeholder="blur"
+          blurDataURL={photo.placeholder}
+          className="aspect-square object-cover w-full h-full"
+          alt="Picture of the author"
+          quality={100}
+        />
+        <div className="absolute p-8 left-0 top-0 w-full h-full bg-white bg-opacity-80 flex justify-center items-center transition-opacity duration-50 ease-in-out opacity-0 group-hover:opacity-100">
+          <div className="text-slate-900 text-center">
+            <figcaption className="text-4xl">{album.name}</figcaption>
+          </div>
+        </div>
+      </Link>
+    </figure>
   );
 };
 
 const Home = async () => {
   const albums = await getAlbums();
   return (
-    <ul>
+    <div className="w-full grid grid-cols-2 gap-8">
       {albums.map((album, i) => {
         return (
-          <li key={i}>
+          <div key={i}>
             <Photo album={album} />
-          </li>
+          </div>
         );
       })}
-    </ul>
+    </div>
   );
 };
 

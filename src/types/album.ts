@@ -7,6 +7,8 @@ type Photo = {
   type?: string;
   url: string;
   ordering?:number;
+  isPortrait: boolean;
+  ratio: number;
   exif: {
     title?: string,
     description?: string,
