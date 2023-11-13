@@ -29,6 +29,7 @@ type Photo = {
 type Album = {
   id: number;
   name: string;
+  description?: string;
   slug: string;
   date: string;
   photos: Photo[];

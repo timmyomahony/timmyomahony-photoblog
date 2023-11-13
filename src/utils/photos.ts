@@ -6,7 +6,6 @@ import getUuid from "uuid-by-string";
 import type { Photo, Album, Albums } from "@/types/photos";
 import { getS3Keys } from "@/utils/aws";
 
-
 const getSimplifiedExif = (exif: any) => {
   return {
     date: (exif["Digital Creation Date"] || {})["description"],
@@ -30,6 +29,9 @@ const getPhotos = async (): Promise<Photo[] | []> => {
 
   for (let i = 0; i < s3Keys.length; i++) {
     const path = s3Keys[i];
+    if (!path.endsWith("jpg") && !path.endsWith("jpeg")) {
+      continue;
+    }
     const uuid = getUuid(path);
     const url = encodeURI(`${process.env.AWS_PUBLIC_URL}${path}`);
     let photoFile = await fetch(url);
@@ -61,8 +63,9 @@ const getPhotos = async (): Promise<Photo[] | []> => {
 
 const getAlbums = async (): Promise<Album[] | []> => {
   const photos = await getPhotos();
-  const albums: Albums = {};
+  const albumsMap: Albums = {};
 
+  // Sort photos into albums
   for (let i = 0; i < photos.length; i++) {
     const photo = photos[i];
     const albumMatch = photo.path.match(
@@ -73,22 +76,35 @@ const getAlbums = async (): Promise<Album[] | []> => {
       const name = albumMatch[2];
       const slug = slugify(name, { lower: true });
       const key = `${date}-${slug}`;
-      if (typeof albums[key] === "undefined") {
-        albums[key] = {
+      if (typeof albumsMap[key] === "undefined") {
+        let data = {
           id: i,
           date,
           name,
           slug,
           photos: [],
-        };
+        }
+        // Check if any additional data is saved in album folder
+        const url = encodeURI(
+          `${process.env.AWS_PUBLIC_URL}${date}/${name}/data.json`
+        );
+        try {
+          const res = await fetch(url);
+          if (res.status === 200) {
+            data = {...data, ...(await res.json())}
+          }
+        } catch (error) {}
+        albumsMap[key] = data;
       }
-      albums[key]["photos"].push(photo);
+      albumsMap[key]["photos"].push(photo);
     }
   }
 
-  return Object.values(albums).sort((a, b) =>
+  const albums = Object.values(albumsMap).sort((a, b) =>
     new Date(a.date) < new Date(b.date) ? -1 : 1
   );
+
+  return albums;
 };
 
 export { getPhotos, getAlbums };

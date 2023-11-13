@@ -12,10 +12,9 @@ const AlbumPage = async ({ params }: { params: { slug: string } }) => {
     <section>
       <header className="py-24  text-slate-900 flex">
         <h2 className="w-1/2 text-3xl underline">{album.name}</h2>
-        <p className="w-1/2 text-3xl">
-          Contrary to popular belief, Lorem Ipsum is not simply random text. It
-          has roots in a piece of classical Latin literature from 45 BC
-        </p>
+        {album.description && (
+          <p className="w-1/2 text-3xl">{album.description}</p>
+        )}
       </header>
       <Gallery photos={album.photos} />
     </section>
