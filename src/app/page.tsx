@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 
 import type { Album } from "@/types/photos";
 
@@ -45,5 +46,14 @@ const Home = async () => {
     </div>
   );
 };
+
+const generateMetadata = () => {
+  return {
+    title: "Photography",
+    description: "Photos by Timmy O'Mahony",
+  };
+};
+
+export { generateMetadata };
 
 export default Home;

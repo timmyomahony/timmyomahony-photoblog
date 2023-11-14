@@ -57,7 +57,7 @@ do
         # Create social media thumbnail
         THUMBNAIL_FILENAME=$(basename "$IMAGE_PATH")
         THUMBNAIL_PATH="${THUMBNAIL_DIR%/}/$THUMBNAIL_FILENAME"
-        convert "$IMAGE_PATH" -quality 95 -resize "1200x630^" -gravity "center" -extent "1200x630" "$THUMBNAIL_PATH"
+        convert "$IMAGE_PATH" -quality 100 -resize "1200x630^" -gravity "center" -extent "1200x630" "$THUMBNAIL_PATH"
         mogrify -bordercolor white -border "20x20" "$THUMBNAIL_PATH"
         exiftool -TagsFromFile "$IMAGE_PATH" -all:all -overwrite_original "$THUMBNAIL_PATH"
     fi

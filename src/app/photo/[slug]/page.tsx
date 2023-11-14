@@ -24,13 +24,13 @@ const PhotoPage = async ({ params }: { params: { slug: string } }) => {
         />
       </div>
       <div className="w-full flex gap-8 mt-12">
-        <div className="w-1/2 border-t pt-8 border-gray-100">
+        <div className="w-1/2">
           <h1 className="text-xl font-medium mb-2">{photo.exif.title}</h1>
           <p className="text-md">{photo.exif.description}</p>
         </div>
         <div className="w-1/2">
-          <div className="border-t pt-8 border-gray-100">
-            <dl className="">
+          <div>
+            <dl>
               <div className="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt className="text-sm font-medium leading-6 text-gray-900">
                   Date
@@ -107,8 +107,16 @@ const generateStaticParams = async () => {
   return (await getPhotos()).map((photo) => ({ slug: photo.uuid }));
 };
 
-const generateMetadata = async ({ params }) => {
-  return {};
+const generateMetadata = async ({ params }: { params: { slug: string } }) => {
+  const photo = (await getPhotos()).find((photo) => photo.uuid === params.slug);
+  return {
+    title:
+      photo?.exif?.title ||
+      photo?.exif?.description ||
+      photo?.exif?.fileName ||
+      "Photo",
+    description: photo?.exif?.description || "A photo by Timmy O'Mahony",
+  };
 };
 
 export { generateMetadata, generateStaticParams };

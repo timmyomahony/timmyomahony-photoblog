@@ -22,12 +22,15 @@ const AlbumPage = async ({ params }: { params: { slug: string } }) => {
 };
 
 const generateStaticParams = async () => {
-  const albums = await getAlbums();
-  return albums.map((album) => ({ slug: album.slug }));
+  return (await getAlbums()).map((album) => ({ slug: album.slug }));
 };
 
-const generateMetadata = async ({ params }) => {
-  return {};
+const generateMetadata = async ({ params }: { params: { slug: string } }) => {
+  const album = (await getAlbums()).find((album) => album.slug === params.slug);
+  return {
+    title: album?.name || "Photo album",
+    description: album?.description || "A photo album by Timmy O'Mahony",
+  };
 };
 
 export { generateMetadata, generateStaticParams };
