@@ -1,4 +1,5 @@
 import slugify from "slugify";
+import { basename } from "path";
 import ExifReader from "exifreader";
 import { getPlaiceholder } from "plaiceholder";
 import sizeOf from "image-size";
@@ -35,19 +36,30 @@ const getPhotos = async (): Promise<Photo[] | []> => {
 
   for (let i = 0; i < s3Keys.length; i++) {
     const path = s3Keys[i];
-    if (!path.endsWith("jpg") && !path.endsWith("jpeg")) {
+    console.log(path);
+    if (
+      (!path.endsWith("jpg") && !path.endsWith("jpeg")) ||
+      path.includes("Thumbnails")
+    ) {
       continue;
     }
     const uuid = getUuid(path);
     const url = encodeURI(`${process.env.AWS_PUBLIC_URL}${path}`);
-    let photoFile = await fetch(url);
-    let buffer = Buffer.from(await photoFile.arrayBuffer());
-    let { base64: placeholder } = await getPlaiceholder(buffer);
-    let { height, width, type } = await sizeOf(buffer);
-    let ratio = width / height;
-    let isPortrait = ratio < 1;
-    let exif = ExifReader.load(buffer);
-    let simplifiedExif = getSimplifiedExif(exif);
+    console.log(url);
+    const photoFile = await fetch(url);
+    const buffer = Buffer.from(await photoFile.arrayBuffer());
+    const { base64: placeholder } = await getPlaiceholder(buffer);
+    const { height = 1, width = 1, type } = await sizeOf(buffer);
+    const ratio = width / height;
+    const isPortrait = ratio < 1;
+    const exif = ExifReader.load(buffer);
+    const simplifiedExif = getSimplifiedExif(exif);
+    const thumbnail = encodeURI(
+      `${process.env.AWS_PUBLIC_URL}${path.replace(
+        basename(path),
+        `Thumbnails/${basename(path)}`
+      )}`
+    );
 
     photos.push({
       id: i,
@@ -60,6 +72,7 @@ const getPhotos = async (): Promise<Photo[] | []> => {
       ratio,
       isPortrait,
       placeholder,
+      thumbnail,
       exif: simplifiedExif,
     });
   }
@@ -91,7 +104,7 @@ const getAlbums = async (): Promise<Album[] | []> => {
           name,
           slug,
           photos: [],
-        }
+        };
         // Check if any additional data is saved in album folder
         const url = encodeURI(
           `${process.env.AWS_PUBLIC_URL}${date}/${name}/data.json`
@@ -99,7 +112,7 @@ const getAlbums = async (): Promise<Album[] | []> => {
         try {
           const res = await fetch(url);
           if (res.status === 200) {
-            data = {...data, ...(await res.json())}
+            data = { ...data, ...(await res.json()) };
           }
         } catch (error) {}
         albumsMap[key] = data;

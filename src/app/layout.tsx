@@ -11,6 +11,8 @@ export const metadata: Metadata = {
     template: "%s | Timmy O'Mahony",
     default: "Photos",
   },
+  authors: [{ name: "Timmy O'Mahony", url: "https://timmyomahony.com" }],
+  creator: "Timmy O'Mahony",
 };
 
 export default function RootLayout({

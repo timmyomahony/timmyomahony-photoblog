@@ -116,6 +116,15 @@ const generateMetadata = async ({ params }: { params: { slug: string } }) => {
       photo?.exif?.fileName ||
       "Photo",
     description: photo?.exif?.description || "A photo by Timmy O'Mahony",
+    openGraph: {
+      images: [
+        {
+          url: photo?.thumbnail,
+          width: 1200,
+          height: 630,
+        },
+      ],
+    },
   };
 };
 

@@ -6,24 +6,25 @@ type Photo = {
   width?: number;
   type?: string;
   url: string;
-  ordering?:number;
+  ordering?: number;
   isPortrait: boolean;
   ratio: number;
   exif: {
-    title?: string,
-    description?: string,
-    date?: string,
-    time?: string,
-    fileName?: string,
-    cameraMake?: string,
-    cameraModel?: string,
-    lens?: string,
-    iso?: number,
-    aperture?: string,
-    focalLength?: string,
-    shutterSpeed?: string,
+    title?: string;
+    description?: string;
+    date?: string;
+    time?: string;
+    fileName?: string;
+    cameraMake?: string;
+    cameraModel?: string;
+    lens?: string;
+    iso?: number;
+    aperture?: string;
+    focalLength?: string;
+    shutterSpeed?: string;
   };
   placeholder: string;
+  thumbnail: string;
 };
 
 type Album = {
