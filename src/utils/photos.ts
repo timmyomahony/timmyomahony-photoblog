@@ -6,6 +6,8 @@ import getUuid from "uuid-by-string";
 import type { Photo, Album, Albums } from "@/types/photos";
 import { getS3Keys } from "@/utils/aws";
 
+import photoFixtures from "@/fixtures/photos";
+
 const getSimplifiedExif = (exif: any) => {
   return {
     date: (exif["Digital Creation Date"] || {})["description"],
@@ -24,6 +26,10 @@ const getSimplifiedExif = (exif: any) => {
 };
 
 const getPhotos = async (): Promise<Photo[] | []> => {
+  if (process.env.NODE_ENV == "development") {
+    return photoFixtures;
+  }
+
   const s3Keys = await getS3Keys();
   const photos: Photo[] = [];
 
@@ -57,6 +63,8 @@ const getPhotos = async (): Promise<Photo[] | []> => {
       exif: simplifiedExif,
     });
   }
+
+  console.log(JSON.stringify(photos));
 
   return photos;
 };
