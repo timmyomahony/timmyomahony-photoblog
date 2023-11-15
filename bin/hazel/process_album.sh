@@ -64,6 +64,6 @@ do
 done
 
 # Upload to Digital Ocean
-aws s3 sync "$ALBUM_DIR" "s3://$AWS_BUCKET/$TODAY/$ALBUM_NAME" --endpoint-url "$AWS_ENDPOINT" --acl public-read
+aws s3 sync "$ALBUM_DIR" "s3://$AWS_BUCKET/$TODAY/$ALBUM_NAME" --endpoint-url "$AWS_ENDPOINT" --acl public-read --profile personal
 
 # Run Vercel webhook
