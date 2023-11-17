@@ -54,7 +54,7 @@ const MasonryGrid = ({
 }) => {
   const breakpoint = useBreakpoints();
 
-  const containerRef = useRef(null);
+  const containerRef = useRef<any>(null);
   const [numColumns, setNumColumns] = useState<number | undefined>();
   const [columns, setColumns] = useState<Columns>([]);
 
@@ -95,10 +95,11 @@ const MasonryGrid = ({
           ...photo,
         });
 
-        const columnWidth = containerRef?.current?.clientWidth / numColumns;
-        const tileHeight = (photo.height / photo.width) * columnWidth;
-
-        columns[shortestColumnIndex].height += tileHeight;
+        if (photo.height && photo.width && containerRef.current) {
+          const columnWidth = containerRef?.current?.clientWidth / numColumns;
+          const tileHeight = (photo.height / photo.width) * columnWidth;
+          columns[shortestColumnIndex].height += tileHeight;
+        }
       });
 
       setColumns(columns);

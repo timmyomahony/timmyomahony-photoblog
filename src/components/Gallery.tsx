@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import {
   Lightbox,
@@ -16,6 +15,7 @@ import LeftArrowIcon from "@/icons/LeftArrow.svg";
 import CloseIcon from "@/icons/Close.svg";
 import ExternalLinkIcon from "@/icons/ExternalLink.svg";
 
+
 const ExternalLinkButton = () => {
   const router = useRouter();
   const { currentSlide } = useLightboxState();
@@ -23,6 +23,7 @@ const ExternalLinkButton = () => {
     <IconButton
       onClick={() => {
         if (currentSlide) {
+          //@ts-ignore
           router.push(`/photo/${currentSlide.uuid}/`);
         }
       }}

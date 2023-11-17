@@ -6,8 +6,9 @@ import sizeOf from "image-size";
 import getUuid from "uuid-by-string";
 import type { Photo, Album, Albums } from "@/types/photos";
 import { getS3Keys } from "@/utils/aws";
+import NodeCache from "node-cache";
 
-import photoFixtures from "@/fixtures/photos";
+const cache = new NodeCache();
 
 const getSimplifiedExif = (exif: any) => {
   return {
@@ -27,16 +28,18 @@ const getSimplifiedExif = (exif: any) => {
 };
 
 const getPhotos = async (): Promise<Photo[] | []> => {
-  if (process.env.NODE_ENV == "development") {
-    return photoFixtures;
+
+  let photos: Photo[] | undefined = cache.get("photos");
+  if ( photos !== undefined ){
+    return photos;
+  } else {
+    photos = []
   }
 
   const s3Keys = await getS3Keys();
-  const photos: Photo[] = [];
 
   for (let i = 0; i < s3Keys.length; i++) {
     const path = s3Keys[i];
-    console.log(path);
     if (
       (!path.endsWith("jpg") && !path.endsWith("jpeg")) ||
       path.includes("Thumbnails")
@@ -45,7 +48,6 @@ const getPhotos = async (): Promise<Photo[] | []> => {
     }
     const uuid = getUuid(path);
     const url = encodeURI(`${process.env.AWS_PUBLIC_URL}${path}`);
-    console.log(url);
     const photoFile = await fetch(url);
     const buffer = Buffer.from(await photoFile.arrayBuffer());
     const { base64: placeholder } = await getPlaiceholder(buffer);
@@ -77,12 +79,21 @@ const getPhotos = async (): Promise<Photo[] | []> => {
     });
   }
 
-  console.log(JSON.stringify(photos));
+  // console.log(JSON.stringify(photos));
+  cache.set("photos", photos);
 
   return photos;
 };
 
 const getAlbums = async (): Promise<Album[] | []> => {
+
+  let albums: Album[] | undefined = cache.get( "albums" );
+  if ( albums !== undefined ){
+    return albums;
+  } else {
+    albums = []
+  }
+
   const photos = await getPhotos();
   const albumsMap: Albums = {};
 
@@ -90,7 +101,7 @@ const getAlbums = async (): Promise<Album[] | []> => {
   for (let i = 0; i < photos.length; i++) {
     const photo = photos[i];
     const albumMatch = photo.path.match(
-      /^(\d{4}-\d{2}-\d{2})\/([^\/]+)\/([^\/]+)$/
+      /^(\d{4}-\d{2}-\d{2}) ([^\/]+)\/([^\/]+)$/
     );
     if (albumMatch) {
       const date = albumMatch[1];
@@ -121,9 +132,12 @@ const getAlbums = async (): Promise<Album[] | []> => {
     }
   }
 
-  const albums = Object.values(albumsMap).sort((a, b) =>
-    new Date(a.date) < new Date(b.date) ? -1 : 1
+  albums = Object.values(albumsMap).sort((a, b) =>
+    new Date(a.date) < new Date(b.date) ? 1 : -1
   );
+
+  console.log("Setting cache")
+  cache.set("albums", albums);
 
   return albums;
 };

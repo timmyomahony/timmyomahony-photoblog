@@ -7,8 +7,12 @@ const useBreakpoint = () => {
   const [breakpoint, setBreakpoint] = useState<string | undefined>(undefined);
   const config = resolveConfig(tailwindConfig);
 
+  if (config.theme === undefined) {
+    return;
+  }
+
   // Get the breakpoints directly from the Tailwind config
-  const breakpoints = Object.entries(config.theme.screens)
+  const breakpoints: Array<Array<[string, number]>> = Object.entries(config.theme.screens)
     .map(([key, value]) => [key, parseInt(value.toString())])
     .reverse();
 
