@@ -23,6 +23,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "date-fns": "^2.30.0",
     "eslint": "^8",
     "eslint-config-next": "14.0.2",
     "exifreader": "^4.16.0",

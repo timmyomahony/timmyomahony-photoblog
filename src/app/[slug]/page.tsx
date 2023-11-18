@@ -10,12 +10,14 @@ const AlbumPage = async ({ params }: { params: { slug: string } }) => {
     return <></>;
   }
 
+  const padding = (album.description) ? "pt-6 pb-12 lg:pt-32 lg:pb-48" : "py-24";
+
   return (
     <section className="min-h-screen">
-      <header className="py-24  text-slate-900 flex">
-        <h2 className="w-1/2 text-3xl underline">{album.name}</h2>
+      <header className={`${padding} text-slate-900 flex flex-col lg:flex-row gap-6 lg:gap-4`}>
+        <h2 className="w-full lg:w-1/2 text-2xl lg:text-3xl underline">{album.name}</h2>
         {album.description && (
-          <p className="w-1/2 text-3xl">{album.description}</p>
+          <p className="w-full lg:w-1/2 text-xl lg:text-3xl">{album.description}</p>
         )}
       </header>
       <Gallery photos={album.photos} />

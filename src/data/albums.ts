@@ -36,7 +36,7 @@ const fetchAlbums = async (): Promise<Album[] | []> => {
         };
         // Check if any additional data is saved in album folder
         const url = encodeURI(
-          `${process.env.AWS_PUBLIC_URL}${date}/${name}/data.json`
+          `${process.env.AWS_PUBLIC_URL}${date} ${name}/data.json`
         );
         try {
           const res = await fetch(url, { cache: "no-cache"});
