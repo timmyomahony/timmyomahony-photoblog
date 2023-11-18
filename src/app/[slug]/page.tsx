@@ -3,7 +3,6 @@ import Gallery from "@/components/Gallery";
 import { Album } from "@/types/album";
 
 const AlbumPage = async ({ params }: { params: { slug: string } }) => {
-  console.log("Component: fetching albums");
   const albums = await fetchAlbums();
   const album = albums.find((album: Album) => album.slug === params.slug);
 
@@ -30,7 +29,6 @@ const generateStaticParams = async () => {
 };
 
 const generateMetadata = async ({ params }: { params: { slug: string } }) => {
-  console.log("Meta data: fetching albums");
   const albums = await fetchAlbums();
   const album = albums.find((album: Album) => album.slug === params.slug);
   return {
