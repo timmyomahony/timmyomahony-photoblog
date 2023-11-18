@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion, Variants } from "framer-motion";
 
 import useBreakpoints from "@/hooks/breakpoints";
-import type { Photo } from "@/types/photos";
+import type { Photo } from "@/types/photo";
 
 const photoVariants: Variants = {
   offscreen: {
@@ -103,8 +103,6 @@ const MasonryGrid = ({
       });
 
       setColumns(columns);
-
-      console.log(columns);
     }
   }, [numColumns]);
 

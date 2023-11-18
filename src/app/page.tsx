@@ -1,9 +1,6 @@
+import { fetchAlbums } from "@/data/albums";
+import type { Album } from "@/types/album";
 import Image from "next/image";
-import type { Metadata } from "next";
-
-import type { Album } from "@/types/photos";
-
-import { getAlbums } from "@/utils/photos";
 import Link from "next/link";
 
 const Photo = ({ album }: { album: Album }) => {
@@ -33,7 +30,7 @@ const Photo = ({ album }: { album: Album }) => {
 };
 
 const Home = async () => {
-  const albums = await getAlbums();
+  const albums = await fetchAlbums();
   return (
     <div className="w-full grid grid-cols-2 gap-8">
       {albums.map((album, i) => {

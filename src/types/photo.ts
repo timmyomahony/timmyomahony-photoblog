@@ -7,9 +7,7 @@ type Photo = {
   type?: string;
   url: string;
   ordering?: number;
-  isPortrait: boolean;
-  ratio: number;
-  exif: {
+  exif?: {
     title?: string;
     description?: string;
     date?: string;
@@ -27,15 +25,4 @@ type Photo = {
   thumbnail: string;
 };
 
-type Album = {
-  id: number;
-  name: string;
-  description?: string;
-  slug: string;
-  date: string;
-  photos: Photo[];
-};
-
-type Albums = { [key: string]: Album };
-
-export type { Photo, Album, Albums };
+export type { Photo };

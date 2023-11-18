@@ -1,8 +1,11 @@
-import { getAlbums } from "@/utils/photos";
+import { fetchAlbums } from "@/data/albums";
 import Gallery from "@/components/Gallery";
+import { Album } from "@/types/album";
 
 const AlbumPage = async ({ params }: { params: { slug: string } }) => {
-  const album = (await getAlbums()).find((album) => album.slug === params.slug);
+  console.log("Component: fetching albums");
+  const albums = await fetchAlbums();
+  const album = albums.find((album: Album) => album.slug === params.slug);
 
   if (!album) {
     return <></>;
@@ -22,11 +25,14 @@ const AlbumPage = async ({ params }: { params: { slug: string } }) => {
 };
 
 const generateStaticParams = async () => {
-  return (await getAlbums()).map((album) => ({ slug: album.slug }));
+  const albums = await fetchAlbums();
+  return albums.map((album: Album) => ({ slug: album.slug }));
 };
 
 const generateMetadata = async ({ params }: { params: { slug: string } }) => {
-  const album = (await getAlbums()).find((album) => album.slug === params.slug);
+  console.log("Meta data: fetching albums");
+  const albums = await fetchAlbums();
+  const album = albums.find((album: Album) => album.slug === params.slug);
   return {
     title: album?.name || "Photo album",
     description: album?.description || "A photo album by Timmy O'Mahony",

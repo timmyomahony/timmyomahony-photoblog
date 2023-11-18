@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getPhotos } from "@/utils/photos";
+import { getPhotos } from "@/data/photos";
 
 const PhotoPage = async ({ params }: { params: { slug: string } }) => {
   const photo = (await getPhotos()).find((photo) => photo.uuid === params.slug);

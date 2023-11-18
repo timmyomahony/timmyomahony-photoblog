@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import Captions from "yet-another-react-lightbox/plugins/captions";
 import MasonryGrid from "@/components/MasonryGrid";
 import CustomSliderImage from "@/components/CustomSliderImage";
-import type { Photo } from "@/types/photos";
+import type { Photo } from "@/types/photo";
 import LeftArrowIcon from "@/icons/LeftArrow.svg";
 import CloseIcon from "@/icons/Close.svg";
 import ExternalLinkIcon from "@/icons/ExternalLink.svg";
@@ -43,7 +43,6 @@ const Gallery = ({ photos }: { photos: Photo[] }) => {
       <MasonryGrid
         photos={photos}
         onClick={(photo: Photo) => {
-          console.log("Click");
           if (typeof photo.ordering !== "undefined") {
             setIndex(photo.ordering);
             setOpen(true);
