@@ -11,7 +11,7 @@ const AlbumPage = async ({ params }: { params: { slug: string } }) => {
   }
 
   return (
-    <section>
+    <section className="min-h-screen">
       <header className="py-24  text-slate-900 flex">
         <h2 className="w-1/2 text-3xl underline">{album.name}</h2>
         {album.description && (
