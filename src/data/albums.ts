@@ -41,7 +41,7 @@ const fetchAlbums = async (): Promise<Album[] | []> => {
           `${process.env.AWS_PUBLIC_URL}${date}/${name}/data.json`
         );
         try {
-          const res = await fetch(url);
+          const res = await fetch(url, { cache: "no-cache"});
           if (res.status === 200) {
             data = { ...data, ...(await res.json()) };
           }

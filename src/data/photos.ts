@@ -47,7 +47,7 @@ const getPhotos = async (): Promise<Photo[] | []> => {
     }
     const uuid = getUuid(path);
     const url = encodeURI(`${process.env.AWS_PUBLIC_URL}${path}`);
-    const photoFile = await fetch(url);
+    const photoFile = await fetch(url, { cache: "no-cache"});
     const buffer = Buffer.from(await photoFile.arrayBuffer());
     const { base64: placeholder } = await getPlaiceholder(buffer);
     const { height = 1, width = 1, type } = await sizeOf(buffer);
