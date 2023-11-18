@@ -63,9 +63,9 @@ const Gallery = ({ photos }: { photos: Photo[] }) => {
             uuid: photo.uuid,
             height: photo.height,
             width: photo.width,
-            title: photo.exif.title,
+            title: photo?.exif?.title,
             blurDataURL: photo.placeholder,
-            description: photo.exif.description,
+            description: photo?.exif?.description,
           };
         })}
         render={{

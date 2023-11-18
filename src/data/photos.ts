@@ -40,7 +40,7 @@ const getPhotos = async (): Promise<Photo[] | []> => {
   for (let i = 0; i < s3Keys.length; i++) {
     const path = s3Keys[i];
     if (
-      (!path.endsWith("jpg") && !path.endsWith("jpeg")) ||
+      (path && !path.endsWith("jpg") && !path.endsWith("jpeg")) ||
       path.includes("Thumbnails")
     ) {
       continue;

@@ -32,8 +32,8 @@ const Photo = ({ photo }: { photo: Photo }) => {
         placeholder="blur"
         blurDataURL={photo.placeholder}
         className="max-w-full w-full"
-        title={photo.exif.title}
-        alt={photo.exif.description || ""}
+        title={photo?.exif?.title || ""}
+        alt={photo?.exif?.description || ""}
         quality={100}
       />
     </figure>

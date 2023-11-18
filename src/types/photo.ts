@@ -1,3 +1,20 @@
+type Exif = {
+  title?: string;
+  description?: string;
+  date?: string;
+  time?: string;
+  fileName?: string;
+  cameraMake?: string;
+  cameraModel?: string;
+  lens?: string;
+  iso?: number;
+  aperture?: string;
+  focalLength?: string;
+  shutterSpeed?: string;
+}
+
+type ExifKeys = keyof Exif;
+
 type Photo = {
   id: number;
   uuid: string;
@@ -7,22 +24,9 @@ type Photo = {
   type?: string;
   url: string;
   ordering?: number;
-  exif?: {
-    title?: string;
-    description?: string;
-    date?: string;
-    time?: string;
-    fileName?: string;
-    cameraMake?: string;
-    cameraModel?: string;
-    lens?: string;
-    iso?: number;
-    aperture?: string;
-    focalLength?: string;
-    shutterSpeed?: string;
-  };
+  exif?: Exif;
   placeholder: string;
   thumbnail: string;
 };
 
-export type { Photo };
+export type { Photo, Exif, ExifKeys };

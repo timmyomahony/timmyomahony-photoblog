@@ -1,5 +1,46 @@
 import Image from "next/image";
 import { getPhotos } from "@/data/photos";
+import { Exif, ExifKeys } from "@/types/photo";
+
+const Attrs = ({ exif }: { exif: Exif }) => {
+  let attrs: [string, ExifKeys][] = [
+    ["Date", "date"],
+    ["Time", "time"],
+    ["Camera Make", "cameraMake"],
+    ["Camera Model", "cameraModel"],
+    ["Lens", "lens"],
+    ["Aperture", "aperture"],
+    ["Focal Length", "focalLength"],
+    ["Shutter Speed", "shutterSpeed"],
+    ["ISO", "iso"],
+  ];
+
+  return (
+    <div>
+      <dl>
+        {attrs.map(([label, attr], i) => {
+          if (!(attr in exif)) {
+            return <></>;
+          }
+          return (
+            <div
+              key={i}
+              id={`#{attr}`}
+              className="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+            >
+              <dt className="text-sm font-medium leading-6 text-gray-900">
+                {label}
+              </dt>
+              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {exif[attr]}
+              </dd>
+            </div>
+          );
+        })}
+      </dl>
+    </div>
+  );
+};
 
 const PhotoPage = async ({ params }: { params: { slug: string } }) => {
   const photo = (await getPhotos()).find((photo) => photo.uuid === params.slug);
@@ -25,79 +66,10 @@ const PhotoPage = async ({ params }: { params: { slug: string } }) => {
       </div>
       <div className="w-full flex gap-8 mt-12">
         <div className="w-1/2">
-          <h1 className="text-xl font-medium mb-2">{photo.exif.title}</h1>
-          <p className="text-md">{photo.exif.description}</p>
+          <h1 className="text-xl font-medium mb-2">{photo?.exif?.title}</h1>
+          <p className="text-md">{photo?.exif?.description}</p>
         </div>
-        <div className="w-1/2">
-          <div>
-            <dl>
-              <div className="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  Date
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {photo.exif.date}
-                </dd>
-              </div>
-              <div className="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  Time
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {photo.exif.time}
-                </dd>
-              </div>
-              <div className="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  Camera
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {photo.exif.cameraMake} {photo.exif.cameraModel}
-                </dd>
-              </div>
-              <div className="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  Lens
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {photo.exif.lens}
-                </dd>
-              </div>
-              <div className="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  Aperture
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {photo.exif.aperture}
-                </dd>
-              </div>
-              <div className="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  Focal Length
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {photo.exif.focalLength}
-                </dd>
-              </div>
-              <div className="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  Shutter Speed
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {photo.exif.shutterSpeed}
-                </dd>
-              </div>
-              <div className="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  ISO
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {photo.exif.iso}
-                </dd>
-              </div>
-            </dl>
-          </div>
-        </div>
+        <div className="w-1/2">{photo.exif && <Attrs exif={photo.exif} />}</div>
       </div>
     </section>
   );

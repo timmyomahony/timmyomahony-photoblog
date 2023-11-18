@@ -7,7 +7,7 @@ import { ListObjectsCommand } from "@aws-sdk/client-s3";
 export const revalidate = 3600;
 
 // Get list of all keys
-const getS3Keys = cache(async (): Promise<string[] | []> => {
+const getS3Keys = cache(async (): Promise<string[]> => {
   console.log("Fetching S3 keys ...");
   const s3Client = new S3({
     forcePathStyle: false,
@@ -25,7 +25,9 @@ const getS3Keys = cache(async (): Promise<string[] | []> => {
     })
   );
   if (s3Data.Contents) {
-    return Object.values(s3Data.Contents).map((obj) => obj.Key);
+    return Object.values(s3Data.Contents)
+      .filter((obj) => typeof obj.Key !== "undefined")
+      .map((obj) => <string>obj.Key);
   }
   return [];
 });
