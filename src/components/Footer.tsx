@@ -43,7 +43,7 @@ const Footer = () => {
           <span>
             <Link
               href="https://github.com/timmyomahony/timmyomahony-photoblog"
-              className="italic hover:underline"
+              className="hover:underline"
             >
               Interested in how this site is built?
             </Link>

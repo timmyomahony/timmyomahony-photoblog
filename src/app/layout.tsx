@@ -36,6 +36,14 @@ export default function RootLayout({
             <div className="hidden 2xl:block">2xl</div>
           </div>
         )}
+        {process.env.NODE_ENV !== "development" &&
+          process.env.FATHOM_SITE_ID && (
+            <script
+              src="https://cdn.usefathom.com/script.js"
+              data-site={process.env.FATHOM_SITE_ID}
+              defer
+            ></script>
+          )}
       </body>
     </html>
   );
