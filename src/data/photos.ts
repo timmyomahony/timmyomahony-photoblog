@@ -30,9 +30,7 @@ const getPhotos = async (): Promise<Photo[] | []> => {
     if (cachedPhotos && cachedPhotos.length > 0) {
       return cachedPhotos;
     }
-  } catch (err) {
-    console.error(err);
-  }
+  } catch (err) {}
 
   let photos: Photo[] = [];
   const s3Keys = await getS3Keys();

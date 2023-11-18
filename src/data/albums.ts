@@ -9,9 +9,7 @@ const fetchAlbums = async (): Promise<Album[] | []> => {
     if (cachedAlbums && cachedAlbums.length > 0) {
       return cachedAlbums;
     }
-  } catch (err) {
-    console.error(err);
-  }
+  } catch (err) {}
 
   const photos = await getPhotos();
   let albums: Album[] = [];
