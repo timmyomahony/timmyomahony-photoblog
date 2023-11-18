@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 const Footer = () => {
   const lastBuilt = format(new Date(), "EEEE do MMMM 'at' HH:mm");
   return (
-    <footer className="w-full mt-24 py-12 lg:pt-24 lg:pb-8 bg-gray-100">
+    <footer className="w-full mt-24 py-12 lg:pt-24 lg:pb-8 bg-gray-100 group">
       <section className="container px-4">
         <div className="flex flex-col lg:flex-row gap-2 lg:gap-0 text-xl lg:text-2xl">
           <div className="w-1/2">
@@ -38,7 +38,7 @@ const Footer = () => {
           </nav>
         </div>
       </section>
-      <section className="container px-4 mt-28">
+      <section className="container px-4 mt-28 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out">
         <p className="text-xs text-gray-300 w-full flex justify-between">
           <span>
             <Link
