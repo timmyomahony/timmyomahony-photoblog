@@ -28,7 +28,6 @@ const AlbumPhoto = ({ album }: { album: Album }) => {
           alt={photo?.exif?.title || ""}
           quality={95}
           onLoad={() => {
-            console.log(`Loaded ${photo.url}`)
             setLoaded(true)
           }}
         />

@@ -26,7 +26,6 @@ const Photo = ({ photo }: { photo: Photo }) => {
         alt={photo?.exif?.description || ""}
         quality={95}
         onLoad={() => {
-          console.log(`Loaded ${photo.url}`);
           setLoaded(true);
         }}
       />
