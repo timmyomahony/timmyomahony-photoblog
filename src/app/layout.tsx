@@ -21,10 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="min-w-full">
       <body className="font-suisse-intl">
-        <Header />
-        <main className="container px-4">{children}</main>
+        <div className="min-h-screen">
+          <Header />
+          <main className="container px-4">{children}</main>
+        </div>
         <Footer />
         {process.env.NODE_ENV == "development" && (
           <div className="fixed bottom-3 left-3 bg-black rounded-full text-sm h-8 w-8 flex items-center justify-center p-1 text-white">

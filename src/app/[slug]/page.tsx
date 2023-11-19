@@ -1,5 +1,6 @@
-import { fetchAlbums } from "@/data/albums";
+import AlbumHeader from "@/components/AlbumHeader";
 import Gallery from "@/components/Gallery";
+import { fetchAlbums } from "@/data/albums";
 import { Album } from "@/types/album";
 
 const AlbumPage = async ({ params }: { params: { slug: string } }) => {
@@ -10,16 +11,9 @@ const AlbumPage = async ({ params }: { params: { slug: string } }) => {
     return <></>;
   }
 
-  const padding = (album.description) ? "pt-6 pb-12 lg:pt-32 lg:pb-48" : "py-24";
-
   return (
     <section className="min-h-screen">
-      <header className={`${padding} text-slate-900 flex flex-col lg:flex-row gap-6 lg:gap-4`}>
-        <h2 className="w-full lg:w-1/2 text-2xl lg:text-3xl underline">{album.name}</h2>
-        {album.description && (
-          <p className="w-full lg:w-1/2 text-xl lg:text-3xl">{album.description}</p>
-        )}
-      </header>
+      <AlbumHeader album={album} />
       <Gallery photos={album.photos} />
     </section>
   );

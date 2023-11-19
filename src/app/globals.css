@@ -53,11 +53,6 @@
 }
 
 /* Slider */
-.yarl__container {
-  background: none;
-  @apply bg-white bg-opacity-90;
-}
-
 .yarl__button {
   filter: none;
 }

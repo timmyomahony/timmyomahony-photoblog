@@ -7,34 +7,27 @@ import { motion, Variants } from "framer-motion";
 import useBreakpoints from "@/hooks/breakpoints";
 import type { Photo } from "@/types/photo";
 
-const photoVariants: Variants = {
-  offscreen: {
-    opacity: 0,
-    y: 100,
-  },
-  onscreen: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: 0.2,
-      duration: 0.35,
-    },
-  },
-};
-
 const Photo = ({ photo }: { photo: Photo }) => {
+  const [loaded, setLoaded] = useState(false);
   return (
-    <figure>
+    <figure
+      className={`relative group bg-gray-200 ${
+        !loaded ? "cursor-wait animate-pulse" : "cursor-zoom-in"
+      }`}
+    >
       <Image
         src={photo.url}
         width={photo.width}
         height={photo.height}
-        placeholder="blur"
-        blurDataURL={photo.placeholder}
-        className="max-w-full w-full"
+        className={`max-w-full w-full transition-all duration-500 ease-in-out ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
         title={photo?.exif?.title || ""}
         alt={photo?.exif?.description || ""}
-        quality={100}
+        quality={95}
+        onLoad={() => {
+          setLoaded(true);
+        }}
       />
     </figure>
   );
@@ -53,30 +46,32 @@ const MasonryGrid = ({
   onClick: (photo: Photo) => void;
 }) => {
   const breakpoint = useBreakpoints();
-
   const containerRef = useRef<any>(null);
-  const [numColumns, setNumColumns] = useState<number | undefined>();
+  const [numColumns, setNumColumns] = useState<number | undefined>(undefined);
   const [columns, setColumns] = useState<Columns>([]);
 
   useEffect(() => {
-    console.log(`Breakpoint changed to ${breakpoint}`);
-    if (breakpoint) {
-      setNumColumns(
-        {
-          sm: 1,
-          md: 2,
-          lg: 3,
-          xl: 3,
-          "2xl": 3,
-        }[breakpoint]
-      );
+    if (breakpoint !== undefined) {
+      console.log(`Breakpoint changed to ${breakpoint}`);
+      if (breakpoint === null) {
+        setNumColumns(1);
+      } else {
+        setNumColumns(
+          {
+            sm: 1,
+            md: 2,
+            lg: 3,
+            xl: 3,
+            "2xl": 3,
+          }[breakpoint]
+        );
+      }
     }
   }, [breakpoint]);
 
   useEffect(() => {
-    if (numColumns) {
+    if (numColumns !== undefined) {
       console.log(`Columns changed to ${numColumns}`);
-
       const columns: Columns = Array.from({ length: numColumns }, () => ({
         height: 0,
         photos: [],
@@ -109,20 +104,15 @@ const MasonryGrid = ({
   return (
     <div ref={containerRef} className="w-full flex gap-8">
       {columns.map((column, i) => (
-        <ul className="flex flex-col gap-8 flex-1" key={i}>
+        <ul className="flex flex-col gap-4 lg:gap-8 flex-1" key={i}>
           {column.photos.map((photo) => (
-            <motion.li
+            <li
               className="w-full"
               key={photo.ordering}
-              initial="offscreen"
-              whileInView="onscreen"
-              viewport={{ once: true }}
               onClick={() => onClick(photo)}
             >
-              <motion.div variants={photoVariants} className="cursor-zoom-in">
-                <Photo photo={photo} />
-              </motion.div>
-            </motion.li>
+              <Photo photo={photo} />
+            </li>
           ))}
         </ul>
       ))}

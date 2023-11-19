@@ -26,6 +26,7 @@ type Photo = {
   ordering?: number;
   exif?: Exif;
   placeholder: string;
+  color?: string;
   thumbnail: string;
 };
 
