@@ -110,12 +110,9 @@ const MasonryGrid = ({
             <li
               className="w-full"
               key={photo.ordering}
-              initial="offscreen"
-              whileInView="onscreen"
-              viewport={{ once: true }}
               onClick={() => onClick(photo)}
             >
-              <div variants={photoVariants} className="cursor-zoom-in">
+              <div className="cursor-zoom-in">
                 <Photo photo={photo} />
               </div>
             </li>
