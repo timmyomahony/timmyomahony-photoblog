@@ -7,32 +7,30 @@ import { motion, Variants } from "framer-motion";
 import useBreakpoints from "@/hooks/breakpoints";
 import type { Photo } from "@/types/photo";
 
-const photoVariants: Variants = {
-  offscreen: {
-    opacity: 0,
-    y: 100,
-  },
-  onscreen: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: 0.2,
-      duration: 0.35,
-    },
-  },
-};
-
 const Photo = ({ photo }: { photo: Photo }) => {
+  const [loaded, setLoaded] = useState(false);
   return (
-    <Image
-      src={photo.url}
-      width={photo.width}
-      height={photo.height}
-      className="max-w-full w-full bg-gray-100"
-      title={photo?.exif?.title || ""}
-      alt={photo?.exif?.description || ""}
-      quality={100}
-    />
+    <figure
+      className={`relative group bg-gray-200 ${
+        !loaded ? "cursor-wait animate-pulse" : "cursor-zoom-in"
+      }`}
+    >
+      <Image
+        src={photo.url}
+        width={photo.width}
+        height={photo.height}
+        className={`max-w-full w-full transition-all duration-300 ease-out ${
+          loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+        }`}
+        title={photo?.exif?.title || ""}
+        alt={photo?.exif?.description || ""}
+        quality={95}
+        onLoad={() => {
+          console.log(`Loaded ${photo.url}`);
+          setLoaded(true);
+        }}
+      />
+    </figure>
   );
 };
 
@@ -49,7 +47,6 @@ const MasonryGrid = ({
   onClick: (photo: Photo) => void;
 }) => {
   const breakpoint = useBreakpoints();
-
   const containerRef = useRef<any>(null);
   const [numColumns, setNumColumns] = useState<number | undefined>();
   const [columns, setColumns] = useState<Columns>([]);
@@ -112,9 +109,7 @@ const MasonryGrid = ({
               key={photo.ordering}
               onClick={() => onClick(photo)}
             >
-              <div className="cursor-zoom-in">
-                <Photo photo={photo} />
-              </div>
+              <Photo photo={photo} />
             </li>
           ))}
         </ul>
