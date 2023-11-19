@@ -47,14 +47,15 @@ const MasonryGrid = ({
 }) => {
   const breakpoint = useBreakpoints();
   const containerRef = useRef<any>(null);
-  const [numColumns, setNumColumns] = useState<number | undefined>();
+  const [numColumns, setNumColumns] = useState<number | undefined>(undefined);
   const [columns, setColumns] = useState<Columns>([]);
 
   useEffect(() => {
-    console.log(`Breakpoint changed to ${breakpoint}`);
-    if (breakpoint) {
+    if (breakpoint !== undefined) {
+      console.log(`Breakpoint changed to ${breakpoint}`);
       setNumColumns(
         {
+          null: 1,
           sm: 1,
           md: 2,
           lg: 3,
@@ -66,9 +67,8 @@ const MasonryGrid = ({
   }, [breakpoint]);
 
   useEffect(() => {
-    if (numColumns) {
+    if (numColumns !== undefined) {
       console.log(`Columns changed to ${numColumns}`);
-
       const columns: Columns = Array.from({ length: numColumns }, () => ({
         height: 0,
         photos: [],
@@ -101,7 +101,7 @@ const MasonryGrid = ({
   return (
     <div ref={containerRef} className="w-full flex gap-8">
       {columns.map((column, i) => (
-        <ul className="flex flex-col gap-8 flex-1" key={i}>
+        <ul className="flex flex-col gap-4 lg:gap-8 flex-1" key={i}>
           {column.photos.map((photo) => (
             <li
               className="w-full"

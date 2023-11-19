@@ -16,7 +16,7 @@ const Footer = () => {
               </Link>
             </h2>
           </div>
-          <nav className="w-full lg:w-1/2">
+          <nav className="mt-12 lg:mt-0 w-full lg:w-1/2">
             <ul className="flex flex-col gap-2 lg:gap-4">
               <li>
                 <Link
@@ -38,8 +38,8 @@ const Footer = () => {
           </nav>
         </div>
       </section>
-      <section className="container px-4 mt-12 lg:mt-28 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out">
-        <p className="text-xs text-gray-300 w-full flex flex-col lg:flex-row justify-between gap-2 lg:gap-0">
+      <section className="hidden lg:block container px-4 mt-28 group-hover:opacity-100 transition-opacity duration-500 ease-out">
+        <p className="text-xs text-gray-300 w-full flex flex-col lg:flex-row justify-between">
           <span>
             <Link
               href="https://github.com/timmyomahony/timmyomahony-photoblog"
