@@ -53,16 +53,19 @@ const MasonryGrid = ({
   useEffect(() => {
     if (breakpoint !== undefined) {
       console.log(`Breakpoint changed to ${breakpoint}`);
-      setNumColumns(
-        {
-          null: 1,
-          sm: 1,
-          md: 2,
-          lg: 3,
-          xl: 3,
-          "2xl": 3,
-        }[breakpoint]
-      );
+      if (breakpoint === null) {
+        setNumColumns(1);
+      } else {
+        setNumColumns(
+          {
+            sm: 1,
+            md: 2,
+            lg: 3,
+            xl: 3,
+            "2xl": 3,
+          }[breakpoint]
+        );
+      }
     }
   }, [breakpoint]);
 

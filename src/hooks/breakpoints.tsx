@@ -3,7 +3,7 @@ import tailwindConfig from "@/../tailwind.config";
 
 import { useEffect, useState } from "react";
 
-const useBreakpoint = (): string | undefined => {
+const useBreakpoint = (): string | undefined | null => {
   const [breakpoint, setBreakpoint] = useState<string | undefined | null>(undefined);
   const config = resolveConfig(tailwindConfig);
 
