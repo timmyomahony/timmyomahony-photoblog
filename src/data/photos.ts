@@ -35,6 +35,7 @@ const getPhotos = async (): Promise<Photo[] | []> => {
   let photos: Photo[] = [];
   const s3Keys = await getS3Keys();
 
+  // Process all images
   for (let i = 0; i < s3Keys.length; i++) {
     const path = s3Keys[i];
     if (

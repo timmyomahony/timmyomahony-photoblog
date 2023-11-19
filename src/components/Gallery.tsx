@@ -51,6 +51,7 @@ const Gallery = ({ photos }: { photos: Photo[] }) => {
       />
       <Lightbox
         index={index}
+        styles={{ root: { "--yarl__color_backdrop": "rgba(255, 255, 255, .9)" } }}
         open={open}
         plugins={[Captions]}
         toolbar={{
