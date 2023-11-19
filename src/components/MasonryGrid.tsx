@@ -19,7 +19,7 @@ const Photo = ({ photo }: { photo: Photo }) => {
         src={photo.url}
         width={photo.width}
         height={photo.height}
-        className={`max-w-full w-full transition-all duration-300 ease-out ${
+        className={`max-w-full w-full transition-all duration-500 ease-out ${
           loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
         }`}
         title={photo?.exif?.title || ""}
