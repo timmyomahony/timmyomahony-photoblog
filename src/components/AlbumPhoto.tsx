@@ -22,7 +22,7 @@ const AlbumPhoto = ({ album }: { album: Album }) => {
           src={photo.url}
           width={photo.width}
           height={photo.height}
-          className={`aspect-square object-cover w-full h-full transition-opacity duration-500 ease-in ${
+          className={`aspect-square xl:aspect-[2/3] object-cover w-full h-full transition-opacity duration-500 ease-in ${
             loaded ? "opacity-100" : "opacity-0"
           }`}
           alt={photo?.exif?.title || ""}
@@ -33,9 +33,9 @@ const AlbumPhoto = ({ album }: { album: Album }) => {
           }}
         />
         {loaded && (
-          <div className="absolute p-8 left-0 top-0 w-full h-full bg-white bg-opacity-80 flex justify-center items-center transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100">
-            <div className="text-slate-900 text-center">
-              <figcaption className="text-4xl xl:text-3xl underline">
+          <div className="absolute p-8 left-0 top-0 w-full h-full bg-white bg-opacity-0 md:bg-opacity-80 flex justify-center items-center transition-opacity duration-300 ease-in-out md:opacity-0 md:group-hover:opacity-100">
+            <div className="text-white md:text-slate-900 text-center">
+              <figcaption className="text-3xl md:text-4xl xl:text-3xl md:underline">
                 {album.name}
               </figcaption>
             </div>
