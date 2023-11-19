@@ -14,10 +14,10 @@ const AlbumHeader = ({ album }: { album: Album }) => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        transition={{ duration: 1, delay: 1 }}
+        transition={{ duration: 0.75 }}
         variants={{
           visible: { opacity: 1, y: 0 },
-          hidden: { opacity: 0, y: -20 },
+          hidden: { opacity: 0, y: 20 },
         }}
       >
         {album.name}
@@ -28,10 +28,10 @@ const AlbumHeader = ({ album }: { album: Album }) => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: 2 }}
+          transition={{ duration: 0.75, delay: 0.5 }}
           variants={{
             visible: { opacity: 1, y: 0 },
-            hidden: { opacity: 0, y: -20 },
+            hidden: { opacity: 0, y: 20 },
           }}
         >
           {album.description}
