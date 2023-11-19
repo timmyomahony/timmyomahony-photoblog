@@ -1,11 +1,11 @@
-import { basename } from "path";
-import ExifReader from "exifreader";
-import { getPlaiceholder } from "plaiceholder";
-import sizeOf from "image-size";
-import getUuid from "uuid-by-string";
-import type { Photo } from "@/types/photo";
 import { getS3Keys } from "@/data/aws";
 import { readFromCache, writeToCache } from "@/data/cache";
+import type { Photo } from "@/types/photo";
+import ExifReader from "exifreader";
+import sizeOf from "image-size";
+import { basename } from "path";
+import { getPlaiceholder } from "plaiceholder";
+import getUuid from "uuid-by-string";
 
 const getSimplifiedExif = (exif: any) => {
   return {
@@ -45,7 +45,7 @@ const getPhotos = async (): Promise<Photo[] | []> => {
     }
     const uuid = getUuid(path);
     const url = encodeURI(`${process.env.AWS_PUBLIC_URL}${path}`);
-    const photoFile = await fetch(url, { cache: "no-cache"});
+    const photoFile = await fetch(url, { cache: "no-cache" });
     const buffer = Buffer.from(await photoFile.arrayBuffer());
     const { base64: placeholder } = await getPlaiceholder(buffer);
     const { height = 1, width = 1, type } = await sizeOf(buffer);

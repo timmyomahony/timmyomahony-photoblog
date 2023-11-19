@@ -24,19 +24,15 @@ const photoVariants: Variants = {
 
 const Photo = ({ photo }: { photo: Photo }) => {
   return (
-    <figure>
-      <Image
-        src={photo.url}
-        width={photo.width}
-        height={photo.height}
-        placeholder="blur"
-        blurDataURL={photo.placeholder}
-        className="max-w-full w-full"
-        title={photo?.exif?.title || ""}
-        alt={photo?.exif?.description || ""}
-        quality={100}
-      />
-    </figure>
+    <Image
+      src={photo.url}
+      width={photo.width}
+      height={photo.height}
+      className="max-w-full w-full bg-gray-100"
+      title={photo?.exif?.title || ""}
+      alt={photo?.exif?.description || ""}
+      quality={100}
+    />
   );
 };
 
@@ -111,7 +107,7 @@ const MasonryGrid = ({
       {columns.map((column, i) => (
         <ul className="flex flex-col gap-8 flex-1" key={i}>
           {column.photos.map((photo) => (
-            <motion.li
+            <li
               className="w-full"
               key={photo.ordering}
               initial="offscreen"
@@ -119,10 +115,10 @@ const MasonryGrid = ({
               viewport={{ once: true }}
               onClick={() => onClick(photo)}
             >
-              <motion.div variants={photoVariants} className="cursor-zoom-in">
+              <div variants={photoVariants} className="cursor-zoom-in">
                 <Photo photo={photo} />
-              </motion.div>
-            </motion.li>
+              </div>
+            </li>
           ))}
         </ul>
       ))}
