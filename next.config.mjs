@@ -2,6 +2,7 @@ import withPlaiceholder from "@plaiceholder/next";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  staticPageGenerationTimeout: 60 * 5,
   trailingSlash: true,
   images: {
     remotePatterns: [
