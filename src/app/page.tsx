@@ -6,9 +6,7 @@ const Home = async () => {
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
       {albums.map((album, i) => {
-        return (
-          <AlbumPhoto key={i} album={album} />
-        );
+        return <AlbumPhoto key={i} album={album} />;
       })}
     </div>
   );
@@ -16,7 +14,7 @@ const Home = async () => {
 
 const generateMetadata = () => {
   return {
-    title: "Photography",
+    title: "A photoblog by Timmy O'Mahony",
     description: "Photos by Timmy O'Mahony",
   };
 };

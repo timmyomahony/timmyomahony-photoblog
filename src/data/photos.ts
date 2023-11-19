@@ -44,6 +44,7 @@ const getPhotos = async (): Promise<Photo[] | []> => {
     ) {
       continue;
     }
+    console.log(`Processing photo ${path}`);
     const uuid = getUuid(path);
     const url = encodeURI(`${process.env.AWS_PUBLIC_URL}${path}`);
     const photoFile = await fetch(url, { cache: "no-cache" });
