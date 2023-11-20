@@ -4,6 +4,8 @@ An opinionated static photo blog using [Next.js 13](https://nextjs.org/). You ca
 
 !["A screenshot of the frontpage of the blog at https://photos.timmyomahony.com"](./screenshot.jpg)
 
+If you're interested in running this codebase for yourself, make sure to look through the rest of the readme or [this blog post](https://timmyomahony.com/blog/creating-a-static-next-13-photo-blog/) to get an idea of the restrictions.
+
 ## Requirements
 
 - Node 18
@@ -28,26 +30,24 @@ AWS_SECRET=
 AWS_SECRET_ACCESS_KEY=https://timmyomahony-photos.ams3.digitaloceanspaces.com/
 ```
 
-(I used Digital Ocean Spaces, but AWS will work as well)
-
-That's it, run it:
+Run it:
 
 ```bash
 npm run dev
 ```
 
-## Motivation
+## Overview
 
 The goal of this project was to make a photo blog that:
 
 1. Had as few moving parts as posible.
 2. Made publishing as painless and friction-free as possible.
 
-With that in mind, this codebase is opinionated and rigid in how it works to suit my requirements.
+## Workflow
 
-The publishing workflow is intended to be a single step: export images to a folder and let automation to the rest.
+!["Screenshot of photo blog workflow"](https://cdn.timmyomahony.com/assets/screenshot-of-photoblog-workflow.png)
 
-Specifically:
+With that in mind, this codebase is opinionated and rigid in how it works to suit my requirements. The publishing workflow is intended to be a single step: export images to a folder and let automation to the rest:
 
 - There are no databases, APIs, servers etc. Everything is static.
 - OS automation is used to prepare and upload images to S3 (I'm using MacOS and Hazel).
@@ -56,7 +56,7 @@ Specifically:
 - The folder name contains the date which is used for sorting.
 - EXIF metadata is used for image titles, captions, tags etc.
 
-## OS Automation
+### OS Automation
 
 In order to make publishing as painfree as possible, I use [Hazel](https://www.noodlesoft.com/) on MacOS to automate the preparation and upload of photos to storage.
 
@@ -86,7 +86,7 @@ The folder structure is used to extract both the date of the photo album and the
 
 Exif metadata is extracted for each photo: the title, caption and tags for example.
 
-## Additional data
+### Additional data
 
 You can retrospectively add a `data.json` to each album folder, which will be called during builds for additional data belonging to the album. Currenty it's limited to:
 
