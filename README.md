@@ -38,14 +38,18 @@ npm run dev
 
 ## Background
 
-The goal of this project was to make a photo blog that:
+The goal of this project is to make a static photo blog that makes it incredibly easy to publish new content.
 
-1. Had as few moving parts as possible.
-2. Made publishing as painless and friction-free as possible.
+I've run a number of small personal photo blogs in the past with CMSs or template-driven apps. Despite my best intentions, content eventually stagnated as I got frustrated having to go through an involved publishing experience every time I want to add new photos.
 
-## Workflow
+To avoid these pitfalls, this time around I wanted:
 
-With that in mind, this codebase is opinionated and rigid in how it works to suit my requirements. The publishing workflow is intended to be a single step: export images to a folder and let automation handle the rest:
+1. As few moving parts as possible.
+2. A friction-free publishing experience.
+
+With that in mind, this codebase is opinionated and rigid in how it works to suit these requirements.
+
+The publishing workflow is intended to be a single step: export images to a folder and let automation handle the rest:
 
 !["Screenshot of photo blog workflow"](https://cdn.timmyomahony.com/assets/screenshot-of-photoblog-workflow.png)
 
