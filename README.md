@@ -36,18 +36,18 @@ Run it:
 npm run dev
 ```
 
-## Overview
+## Background
 
 The goal of this project was to make a photo blog that:
 
-1. Had as few moving parts as posible.
+1. Had as few moving parts as possible.
 2. Made publishing as painless and friction-free as possible.
 
 ## Workflow
 
-!["Screenshot of photo blog workflow"](https://cdn.timmyomahony.com/assets/screenshot-of-photoblog-workflow.png)
-
 With that in mind, this codebase is opinionated and rigid in how it works to suit my requirements. The publishing workflow is intended to be a single step: export images to a folder and let automation handle the rest:
+
+!["Screenshot of photo blog workflow"](https://cdn.timmyomahony.com/assets/screenshot-of-photoblog-workflow.png)
 
 - There are no databases, APIs, servers etc. Everything is static.
 - OS automation is used to prepare and upload images to S3 (I'm using MacOS and Hazel).
