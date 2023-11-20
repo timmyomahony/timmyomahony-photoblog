@@ -1,6 +1,6 @@
 import Link from "next/link";
-import {version} from '@/../package.json';
-import { format } from 'date-fns';
+import { version } from "@/../package.json";
+import { format } from "date-fns";
 
 const Footer = () => {
   const lastBuilt = format(new Date(), "EEEE do MMMM 'at' HH:mm");
@@ -42,7 +42,7 @@ const Footer = () => {
         <p className="text-xs text-gray-300 w-full flex flex-col lg:flex-row justify-between">
           <span>
             <Link
-              href="https://github.com/timmyomahony/timmyomahony-photoblog"
+              href="https://timmyomahony.com/blog/creating-a-static-next-13-photo-blog/"
               className="hover:underline"
             >
               Interested in how this site is built?

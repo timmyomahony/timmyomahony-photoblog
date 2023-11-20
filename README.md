@@ -4,7 +4,7 @@ An opinionated static photo blog using [Next.js 13](https://nextjs.org/). You ca
 
 !["A screenshot of the frontpage of the blog at https://photos.timmyomahony.com"](./screenshot.jpg)
 
-If you're interested in running this codebase for yourself, make sure to look through the rest of the readme or [this blog post](https://timmyomahony.com/blog/creating-a-static-next-13-photo-blog/) to get an idea of the restrictions.
+If you're interested in running this codebase for yourself, make sure to look through the rest of the readme or [this blog post](https://timmyomahony.com/blog/creating-a-static-next-13-photo-blog/) to get an idea of the (opinionated) approach.
 
 ## Requirements
 
@@ -47,7 +47,7 @@ The goal of this project was to make a photo blog that:
 
 !["Screenshot of photo blog workflow"](https://cdn.timmyomahony.com/assets/screenshot-of-photoblog-workflow.png)
 
-With that in mind, this codebase is opinionated and rigid in how it works to suit my requirements. The publishing workflow is intended to be a single step: export images to a folder and let automation to the rest:
+With that in mind, this codebase is opinionated and rigid in how it works to suit my requirements. The publishing workflow is intended to be a single step: export images to a folder and let automation handle the rest:
 
 - There are no databases, APIs, servers etc. Everything is static.
 - OS automation is used to prepare and upload images to S3 (I'm using MacOS and Hazel).
@@ -98,5 +98,5 @@ You can retrospectively add a `data.json` to each album folder, which will be ca
 
 ## Roadmap
 
-- Automate the creation of thumbnails via Next.js metadata/og API.
-- Figure out to automate new builds when all images are exported (this is a shortcoming of Hazel).
+- [ ] Automate the creation of thumbnails via Next.js metadata/og API.
+- [ ] Figure out to automate new builds when all images are exported (this is a shortcoming of Hazel).
