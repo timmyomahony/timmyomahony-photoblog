@@ -47,7 +47,7 @@ To avoid these pitfalls, this time around I wanted:
 1. As few moving parts as possible.
 2. A friction-free publishing experience.
 
-With that in mind, this codebase is opinionated and rigid in how it works to suit these requirements.
+With that in mind, this codebase is opinionated to suit these requirements.
 
 The publishing workflow is intended to be a single step: export images to a folder and let automation handle the rest:
 
@@ -63,8 +63,6 @@ The publishing workflow is intended to be a single step: export images to a fold
 ### OS Automation
 
 In order to make publishing as painfree as possible, I use [Hazel](https://www.noodlesoft.com/) on MacOS to automate the preparation and upload of photos to storage.
-
-It works like this:
 
 - I export photos from Lightroom CC at full quality and size to a predefined folder (e.g. `Export`)
 - Hazel detects when images are added to this folder and a script `./bin/hazel/process_images.sh` is run each image.
@@ -86,9 +84,9 @@ Photos processed by this script are stored on S3 with the following folder struc
 ...
 ```
 
-The folder structure is used to extract both the date of the photo album and the name of the photo album.
+### Website Build
 
-Exif metadata is extracted for each photo: the title, caption and tags for example.
+The app itself uses Next.js 13's app directory and server-side components to statically generate all content at build-time. All of the photos are downloaded via the JavaScript AWS SDK and processed.
 
 ### Additional data
 
