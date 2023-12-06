@@ -88,6 +88,12 @@ Photos processed by this script are stored on S3 with the following folder struc
 
 The app itself uses Next.js 13's app directory and server-side components to statically generate all content at build-time. All of the photos are downloaded via the JavaScript AWS SDK and processed.
 
+Currently hosted on Vercel, a new build can be run with:
+
+```sh
+vercel --prod
+```
+
 ### Additional data
 
 You can retrospectively add a `data.json` to each album folder, which will be called during builds for additional data belonging to the album. Currenty it's limited to:
