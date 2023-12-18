@@ -28,7 +28,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="mailto:hey@timmyomahony.com"
+                  href="http://timmyomahony.com/contact/"
                   className="hover:underline"
                 >
                   Email
