@@ -1,6 +1,6 @@
 {
   "name": "timmyomahony-photoblog",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,30 +9,30 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "framer-motion": "^10.16.4",
-    "next": "14.0.2",
-    "react": "^18",
-    "react-dom": "^18",
-    "vercel": "^32.5.5",
-    "yet-another-react-lightbox": "^3.15.1"
+    "framer-motion": "^10.18.0",
+    "next": "^14.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vercel": "^32.7.2",
+    "yet-another-react-lightbox": "^3.21.6"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.449.0",
+    "@aws-sdk/client-s3": "^3.654.0",
     "@plaiceholder/next": "^3.0.0",
     "@svgr/webpack": "^8.1.0",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "^10.0.1",
+    "@types/node": "^20.16.5",
+    "@types/react": "^18.3.8",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.20",
     "date-fns": "^2.30.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.2",
-    "exifreader": "^4.16.0",
-    "image-size": "^1.0.2",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.0.2",
+    "exifreader": "^4.23.5",
+    "image-size": "^1.1.1",
     "postcss": "^8",
     "slugify": "^1.6.6",
-    "tailwindcss": "^3.3.0",
-    "typescript": "^5",
+    "tailwindcss": "^3.4.12",
+    "typescript": "^5.6.2",
     "uuid-by-string": "^4.0.0"
   }
 }
