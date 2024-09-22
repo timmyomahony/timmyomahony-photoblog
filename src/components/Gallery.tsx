@@ -15,6 +15,11 @@ import LeftArrowIcon from "@/icons/LeftArrow.svg";
 import CloseIcon from "@/icons/Close.svg";
 import ExternalLinkIcon from "@/icons/ExternalLink.svg";
 
+declare module "yet-another-react-lightbox" {
+  interface Labels {
+    "View photo"?: string;
+  }
+}
 
 const ExternalLinkButton = () => {
   const router = useRouter();
@@ -51,7 +56,9 @@ const Gallery = ({ photos }: { photos: Photo[] }) => {
       />
       <Lightbox
         index={index}
-        styles={{ root: { "--yarl__color_backdrop": "rgba(255, 255, 255, .9)" } }}
+        styles={{
+          root: { "--yarl__color_backdrop": "rgba(255, 255, 255, .9)" },
+        }}
         open={open}
         plugins={[Captions]}
         toolbar={{
