@@ -28,7 +28,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="mailto:hey@timmyomahony.com"
+                  href="http://timmyomahony.com/contact/"
                   className="hover:underline"
                 >
                   Email
@@ -39,15 +39,15 @@ const Footer = () => {
         </div>
       </section>
       <section className="hidden lg:block container px-4 mt-28 group-hover:opacity-100 transition-opacity duration-500 ease-out">
-        <p className="text-xs text-gray-300 w-full flex flex-col lg:flex-row justify-between">
-          <span>
+        <p className="text-xs text-gray-300 w-full flex flex-col lg:flex-row justify-end">
+          {/* <span>
             <Link
               href="https://timmyomahony.com/blog/creating-a-static-next-13-photo-blog/"
               className="hover:underline"
             >
               Interested in how this site is built?
             </Link>
-          </span>
+          </span> */}
           <span>
             <Link href="https://github.com/timmyomahony/timmyomahony-photoblog">
               Version <span className="underline">{version}</span>
