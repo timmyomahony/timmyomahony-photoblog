@@ -39,7 +39,7 @@ const Footer = () => {
         </div>
       </section>
       <section className="hidden lg:block container px-4 mt-28 group-hover:opacity-100 transition-opacity duration-500 ease-out">
-        <p className="text-xs text-gray-300 w-full flex flex-col lg:flex-row justify-end">
+        <p className="text-xs text-gray-300 w-full flex flex-col lg:flex-row">
           <span>
             <Link href="https://github.com/timmyomahony/timmyomahony-photoblog">
               Version <span className="underline">{version}</span>
