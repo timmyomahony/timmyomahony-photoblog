@@ -1,5 +1,9 @@
 # Next.js Photo Blog
 
+> 🔔 This is no longer maintained. I've moved all of my photos to my main portfolio website `timmyomahony-portfolio` which you can see [here](https://github.com/timmyomahony/timmyomahony-portfolio). 
+
+---
+
 An opinionated static photo blog using [Next.js 13](https://nextjs.org/). You can see the photo blog in action at [https://photos.timmyomahony.com](https://photos.timmyomahony.com).
 
 !["A screenshot of the frontpage of the blog at https://photos.timmyomahony.com"](./screenshot.jpg)
